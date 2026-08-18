@@ -59,6 +59,11 @@ jobs:
           (cd frontend/user && pnpm run test)
           go test ./...
 
+      - name: Scan reachable Go vulnerabilities
+        run: |
+          go install golang.org/x/vuln/cmd/govulncheck@latest
+          govulncheck ./...
+
       - name: Build and embed frontends
         run: |
           (cd frontend/admin && pnpm run build:fullstack)
