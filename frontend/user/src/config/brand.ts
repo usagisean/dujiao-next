@@ -1,4 +1,4 @@
-export const DEFAULT_BRAND_NAME = 'ZX AI Hub'
+export const DEFAULT_BRAND_NAME = 'ZX NEXUS'
 export const DEFAULT_BRAND_MARK = 'ZX'
 
 /**
@@ -10,4 +10,3 @@ export function resolveBrandName(configuredName: unknown): string {
   if (!name || name === 'Dujiao-Next') return DEFAULT_BRAND_NAME
   return name
 }
-

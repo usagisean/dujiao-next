@@ -130,9 +130,10 @@ func (h *Handler) GetConfig(c *gin.Context) {
 		constants.SettingFieldSiteCurrency:       constants.SiteCurrencyDefault,
 		constants.SettingFieldStorefrontTemplate: constants.StorefrontTemplateDefault,
 		"brand": map[string]interface{}{
-			"site_name": "ZX AI Hub",
+			"site_name": "ZX NEXUS",
 			"site_url":  "https://shop.zxaihub.com",
-			"site_icon": "/zx.svg",
+			"site_icon": "/zx-logo.png",
+			"site_logo": "/zx-logo.png",
 			"site_description": map[string]interface{}{
 				"zh-CN": "精选商品与在线服务平台，以清晰的流程提供便捷、可靠的购买体验。",
 				"zh-TW": "精選商品與線上服務平台，以清晰的流程提供便捷、可靠的購買體驗。",
@@ -148,13 +149,13 @@ func (h *Handler) GetConfig(c *gin.Context) {
 					"zh-CN": "关于我们", "zh-TW": "關於我們", "en-US": "About Us",
 				},
 				"subtitle": map[string]interface{}{
-					"zh-CN": "了解 ZX AI Hub", "zh-TW": "了解 ZX AI Hub", "en-US": "Meet ZX AI Hub",
+					"zh-CN": "了解 ZX NEXUS", "zh-TW": "了解 ZX NEXUS", "en-US": "Meet ZX NEXUS",
 				},
 			},
 			"introduction": map[string]interface{}{
-				"zh-CN": "ZX AI Hub 是一个面向多种商品与在线服务的自助购买平台。我们重视清晰的信息、可靠的交易流程和可持续的服务体验。",
-				"zh-TW": "ZX AI Hub 是一個面向多種商品與線上服務的自助購買平台。我們重視清晰的資訊、可靠的交易流程和可持續的服務體驗。",
-				"en-US": "ZX AI Hub is a self-service marketplace for a wide range of products and online services. We value clear information, reliable transactions, and a service experience built to last.",
+				"zh-CN": "ZX NEXUS 是一个面向多种商品与在线服务的自助购买平台。我们重视清晰的信息、可靠的交易流程和可持续的服务体验。",
+				"zh-TW": "ZX NEXUS 是一個面向多種商品與線上服務的自助購買平台。我們重視清晰的資訊、可靠的交易流程和可持續的服務體驗。",
+				"en-US": "ZX NEXUS is a self-service marketplace for a wide range of products and online services. We value clear information, reliable transactions, and a service experience built to last.",
 			},
 			"services": map[string]interface{}{
 				"title": map[string]interface{}{
@@ -180,7 +181,7 @@ func (h *Handler) GetConfig(c *gin.Context) {
 		},
 		"seo": map[string]interface{}{
 			"title": map[string]interface{}{
-				"zh-CN": "ZX AI Hub", "zh-TW": "ZX AI Hub", "en-US": "ZX AI Hub",
+				"zh-CN": "ZX NEXUS", "zh-TW": "ZX NEXUS", "en-US": "ZX NEXUS",
 			},
 			"description": map[string]interface{}{
 				"zh-CN": "精选商品与在线服务，购买流程清晰，订单状态可查询。",

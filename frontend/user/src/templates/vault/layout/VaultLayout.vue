@@ -4,8 +4,8 @@
     <header class="sticky top-0 z-50 border-b bg-[color:var(--bg)]">
       <div class="mx-auto flex h-[70px] w-full max-w-[1180px] items-center gap-3 px-4 sm:gap-5 sm:px-6">
         <RouterLink class="inline-flex min-w-0 items-center gap-2.5 text-[19px] font-extrabold tracking-[-0.02em] text-foreground" to="/" :title="brandName">
-          <img v-if="brandLogo" :src="brandLogo" :alt="brandName" class="h-8 max-w-[120px] object-contain sm:max-w-[160px]" />
-          <span v-else class="truncate">{{ brandName }}</span>
+          <img v-if="brandLogo" :src="brandLogo" :alt="brandName" class="h-9 w-9 flex-none rounded-full object-cover" />
+          <span class="truncate">{{ brandName }}</span>
         </RouterLink>
 
         <nav class="flex gap-0.5 max-[900px]:hidden">
@@ -103,7 +103,7 @@
           <h4 class="mb-3 text-sm font-bold">{{ t('vault.footer.shop') }}</h4>
           <RouterLink v-if="!isListMode" to="/products" class="flex items-center gap-[7px] py-[5px] text-[14.5px] text-muted-foreground hover:text-primary">{{ t('products.allCategories') }}</RouterLink>
           <RouterLink v-if="noticeEnabled" to="/notice" class="flex items-center gap-[7px] py-[5px] text-[14.5px] text-muted-foreground hover:text-primary">{{ t('nav.notice') }}</RouterLink>
-          <RouterLink v-if="blogEnabled" to="/blog" class="flex items-center gap-[7px] py-[5px] text-[14.5px] text-muted-foreground hover:text-primary">{{ t('nav.blog') }}</RouterLink>
+          <a v-if="blogEnabled" :href="EXTERNAL_BLOG_URL" target="_blank" rel="noopener noreferrer" class="flex items-center gap-[7px] py-[5px] text-[14.5px] text-muted-foreground hover:text-primary">{{ t('nav.blog') }}</a>
           <RouterLink to="/me" class="flex items-center gap-[7px] py-[5px] text-[14.5px] text-muted-foreground hover:text-primary">{{ t('navbar.personalCenter') }}</RouterLink>
         </div>
         <div>
@@ -145,6 +145,7 @@ import { getImageUrl } from '../../../utils/image'
 import { getLocalizedText } from '../../../utils/resellerSiteConfig'
 import { resolveBrandName } from '../../../config/brand'
 import { resolveStoreContacts } from '../../../config/contact'
+import { EXTERNAL_BLOG_URL } from '../../../config/links'
 // 本地自托管字体（替代 Google Fonts CDN），仅 vault 模板加载
 import '@fontsource/rubik/latin-400.css'
 import '@fontsource/rubik/latin-500.css'
@@ -173,7 +174,7 @@ const year = new Date().getFullYear()
 const brandName = computed(() => resolveBrandName(appStore.config?.brand?.site_name))
 const brandLogo = computed(() => {
   const raw = String(appStore.config?.brand?.site_logo || '').trim()
-  return raw ? getImageUrl(raw) : ''
+  return raw && raw !== '/dj.svg' ? getImageUrl(raw) : '/zx-logo.png'
 })
 const brandDescription = computed(() => {
   const desc = appStore.config?.brand?.site_description

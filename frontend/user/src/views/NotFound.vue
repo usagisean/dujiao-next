@@ -35,10 +35,10 @@
               </RouterLink>
             </Button>
             <Button variant="secondary" size="sm" as-child>
-              <RouterLink to="/blog">
+              <a :href="EXTERNAL_BLOG_URL" target="_blank" rel="noopener noreferrer">
                 <BookOpen class="opacity-70" />
                 {{ t('nav.blog') }}
-              </RouterLink>
+              </a>
             </Button>
           </div>
         </div>
@@ -67,6 +67,7 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { useNotFound } from '../composables/useNotFound'
+import { EXTERNAL_BLOG_URL } from '../config/links'
 
 const { t } = useI18n()
 

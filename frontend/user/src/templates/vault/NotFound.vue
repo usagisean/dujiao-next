@@ -17,7 +17,7 @@
             <RouterLink to="/notice"><Bell /> {{ t('nav.notice') }}</RouterLink>
           </Button>
           <Button as-child variant="outline" size="sm" class="rounded-full">
-            <RouterLink to="/blog"><BookOpen /> {{ t('nav.blog') }}</RouterLink>
+            <a :href="EXTERNAL_BLOG_URL" target="_blank" rel="noopener noreferrer"><BookOpen /> {{ t('nav.blog') }}</a>
           </Button>
         </div>
       </div>
@@ -41,6 +41,7 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { useNotFound } from '../../composables/useNotFound'
+import { EXTERNAL_BLOG_URL } from '../../config/links'
 
 const { t } = useI18n()
 
