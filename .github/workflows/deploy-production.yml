@@ -1,0 +1,138 @@
+name: Deploy production shop
+
+on:
+  push:
+    branches:
+      - custom/v1.4.3
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: zx-shop-production
+  cancel-in-progress: false
+
+jobs:
+  build-test-deploy:
+    name: Build, test and deploy
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    environment:
+      name: production
+      url: https://shop.zxaihub.com
+
+    steps:
+      - name: Checkout fixed customization branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.34.3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24.11.1'
+          cache: pnpm
+          cache-dependency-path: |
+            frontend/admin/pnpm-lock.yaml
+            frontend/user/pnpm-lock.yaml
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: true
+
+      - name: Install frontend dependencies
+        run: |
+          (cd frontend/admin && pnpm install --frozen-lockfile)
+          (cd frontend/user && pnpm install --frozen-lockfile)
+
+      - name: Run tests
+        run: |
+          (cd frontend/admin && pnpm run test)
+          (cd frontend/user && pnpm run test)
+          go test ./...
+
+      - name: Build and embed frontends
+        run: |
+          (cd frontend/admin && pnpm run build:fullstack)
+          (cd frontend/user && pnpm run build)
+          rm -rf internal/web/dist
+          mkdir -p internal/web/dist
+          cp -r frontend/admin/dist internal/web/dist/admin
+          cp -r frontend/user/dist internal/web/dist/user
+
+      - name: Build production binary
+        id: artifact
+        shell: bash
+        run: |
+          set -euo pipefail
+          short_sha="${GITHUB_SHA:0:12}"
+          version="v1.4.3+zx.${GITHUB_RUN_NUMBER}.${short_sha}"
+          CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build \
+            -trimpath \
+            -tags release,fullstack \
+            -ldflags "-s -w -X github.com/dujiao-next/internal/version.Version=${version} -X github.com/dujiao-next/internal/version.BuildType=managed" \
+            -o dujiao-next ./cmd/server
+          checksum="$(sha256sum dujiao-next | awk '{print $1}')"
+          printf 'checksum=%s\n' "$checksum" >> "$GITHUB_OUTPUT"
+          printf 'version=%s\n' "$version" >> "$GITHUB_OUTPUT"
+
+      - name: Configure deployment SSH
+        shell: bash
+        env:
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          DEPLOY_KNOWN_HOSTS: ${{ secrets.DEPLOY_KNOWN_HOSTS }}
+        run: |
+          set -euo pipefail
+          install -d -m 0700 ~/.ssh
+          printf '%s\n' "$DEPLOY_SSH_KEY" > ~/.ssh/deploy_key
+          printf '%s\n' "$DEPLOY_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          chmod 0600 ~/.ssh/deploy_key ~/.ssh/known_hosts
+
+      - name: Upload and deploy atomically
+        shell: bash
+        env:
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+          DEPLOY_PORT: ${{ secrets.DEPLOY_PORT }}
+          DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
+          CHECKSUM: ${{ steps.artifact.outputs.checksum }}
+        run: |
+          set -euo pipefail
+          remote_artifact="incoming/dujiao-next.${GITHUB_SHA}"
+          ssh_opts=(-i ~/.ssh/deploy_key -p "$DEPLOY_PORT" -o BatchMode=yes -o StrictHostKeyChecking=yes)
+          scp -i ~/.ssh/deploy_key -P "$DEPLOY_PORT" -o BatchMode=yes -o StrictHostKeyChecking=yes \
+            dujiao-next "${DEPLOY_USER}@${DEPLOY_HOST}:${remote_artifact}"
+          ssh "${ssh_opts[@]}" "${DEPLOY_USER}@${DEPLOY_HOST}" \
+            "sudo /usr/local/sbin/zx-shop-deploy /home/${DEPLOY_USER}/${remote_artifact} ${CHECKSUM} ${GITHUB_SHA}"
+
+      - name: Verify public site
+        shell: bash
+        env:
+          EXPECTED_VERSION: ${{ steps.artifact.outputs.version }}
+        run: |
+          set -euo pipefail
+          verified=false
+          for _ in $(seq 1 45); do
+            health="$(curl --fail --silent --show-error --max-time 5 https://shop.zxaihub.com/health || true)"
+            config="$(curl --fail --silent --show-error --max-time 5 https://shop.zxaihub.com/api/v1/public/config || true)"
+            logo="$(curl --fail --silent --show-error --max-time 5 https://shop.zxaihub.com/zx.svg || true)"
+            if printf '%s\n' "$health" | grep -q '"status":"ok"' \
+              && printf '%s\n' "$config" | grep -Fq "\"app_version\":\"${EXPECTED_VERSION}\"" \
+              && printf '%s\n' "$logo" | grep -Fq 'ZX AI Hub'; then
+              verified=true
+              break
+            fi
+            sleep 2
+          done
+          if [[ "$verified" != true ]]; then
+            printf 'Public verification failed for %s\n' "$EXPECTED_VERSION" >&2
+            exit 1
+          fi
+          printf 'Verified %s at https://shop.zxaihub.com\n' "$EXPECTED_VERSION" >> "$GITHUB_STEP_SUMMARY"
