@@ -1,18 +1,21 @@
 <template>
   <nav
-    class="fixed top-0 left-0 right-0 z-50 bg-card/80 border-b backdrop-blur-md transition-all"
-    :class="scrolled ? 'py-2 shadow-lg' : 'py-4'"
+    class="zx-navbar fixed top-0 left-0 right-0 z-50 border-b backdrop-blur-xl transition-all"
+    :class="scrolled ? 'py-2 shadow-lg' : 'py-3 md:py-4'"
     :style="{ transitionDuration: 'var(--ui-duration-normal)' }">
     <div class="container mx-auto px-4 flex items-center justify-between gap-4">
       <!-- Logo -->
-      <router-link to="/" class="theme-wordmark group relative" :title="brandSiteName">
+      <router-link to="/" class="zx-wordmark group relative" :title="brandSiteName">
         <img
           v-if="brandLogo"
           :src="brandLogo"
           :alt="brandSiteName"
           class="h-8 max-w-[180px] object-contain"
         />
-        <span v-else class="theme-wordmark-text">{{ brandSiteName }}</span>
+        <template v-else>
+          <span class="zx-brand-mark" aria-hidden="true">ZX</span>
+          <span class="zx-wordmark-text">{{ brandSiteName }}</span>
+        </template>
       </router-link>
 
       <!-- Desktop Menu -->
@@ -211,6 +214,7 @@ import { useCartStore } from '../stores/cart'
 import { useUserAuthStore } from '../stores/userAuth'
 import { useTheme } from '../utils/theme'
 import { getImageUrl } from '../utils/image'
+import { resolveBrandName } from '../config/brand'
 import { useNavConfig } from '../composables/useNavConfig'
 import {
   Sun, Moon, ShoppingCart, ClipboardList, LogIn, User, LogOut, Languages,
@@ -251,8 +255,7 @@ const currentLocale = computed(() => {
 const cartCount = computed(() => cartStore.totalItems)
 
 const brandSiteName = computed(() => {
-  const text = String(appStore.config?.brand?.site_name || '').trim()
-  return text !== '' ? text : 'Dujiao-Next'
+  return resolveBrandName(appStore.config?.brand?.site_name)
 })
 
 const brandLogo = computed(() => {

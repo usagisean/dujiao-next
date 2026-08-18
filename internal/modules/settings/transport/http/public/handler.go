@@ -129,9 +129,65 @@ func (h *Handler) GetConfig(c *gin.Context) {
 		"languages":                              append([]string(nil), constants.SupportedLocales...),
 		constants.SettingFieldSiteCurrency:       constants.SiteCurrencyDefault,
 		constants.SettingFieldStorefrontTemplate: constants.StorefrontTemplateDefault,
+		"brand": map[string]interface{}{
+			"site_name": "ZX AI Hub",
+			"site_url":  "https://shop.zxaihub.com",
+			"site_icon": "/zx.svg",
+			"site_description": map[string]interface{}{
+				"zh-CN": "精选商品与在线服务平台，以清晰的流程提供便捷、可靠的购买体验。",
+				"zh-TW": "精選商品與線上服務平台，以清晰的流程提供便捷、可靠的購買體驗。",
+				"en-US": "A curated marketplace for products and online services, built around a clear and reliable purchase experience.",
+			},
+		},
 		"contact": map[string]interface{}{
-			"telegram": "https://telegram.me/dujiaoka",
-			"whatsapp": "https://wa.me/1234567890",
+			"telegram": "https://t.me/ultra537",
+			"whatsapp": "@ultrazx",
+		},
+		"about": map[string]interface{}{
+			"hero": map[string]interface{}{
+				"title": map[string]interface{}{
+					"zh-CN": "关于我们", "zh-TW": "關於我們", "en-US": "About Us",
+				},
+				"subtitle": map[string]interface{}{
+					"zh-CN": "了解 ZX AI Hub", "zh-TW": "了解 ZX AI Hub", "en-US": "Meet ZX AI Hub",
+				},
+			},
+			"introduction": map[string]interface{}{
+				"zh-CN": "ZX AI Hub 是一个面向多种商品与在线服务的自助购买平台。我们重视清晰的信息、可靠的交易流程和可持续的服务体验。",
+				"zh-TW": "ZX AI Hub 是一個面向多種商品與線上服務的自助購買平台。我們重視清晰的資訊、可靠的交易流程和可持續的服務體驗。",
+				"en-US": "ZX AI Hub is a self-service marketplace for a wide range of products and online services. We value clear information, reliable transactions, and a service experience built to last.",
+			},
+			"services": map[string]interface{}{
+				"title": map[string]interface{}{
+					"zh-CN": "我们的服务", "zh-TW": "我們的服務", "en-US": "Our Services",
+				},
+				"items": []interface{}{
+					map[string]interface{}{"zh-CN": "精选商品与服务", "zh-TW": "精選商品與服務", "en-US": "Curated products and services"},
+					map[string]interface{}{"zh-CN": "清晰透明的购买流程", "zh-TW": "清晰透明的購買流程", "en-US": "A clear and transparent purchase flow"},
+					map[string]interface{}{"zh-CN": "可靠的订单与交付支持", "zh-TW": "可靠的訂單與交付支援", "en-US": "Reliable order and delivery support"},
+					map[string]interface{}{"zh-CN": "持续更新的产品信息", "zh-TW": "持續更新的產品資訊", "en-US": "Continuously updated product information"},
+				},
+			},
+			"contact": map[string]interface{}{
+				"title": map[string]interface{}{
+					"zh-CN": "联系我们", "zh-TW": "聯絡我們", "en-US": "Contact Us",
+				},
+				"text": map[string]interface{}{
+					"zh-CN": "如果您对商品或订单有任何疑问，欢迎通过站内提供的方式联系我们。",
+					"zh-TW": "如果您對商品或訂單有任何疑問，歡迎透過站內提供的方式聯絡我們。",
+					"en-US": "If you have questions about a product or order, contact us through the channels provided on this site.",
+				},
+			},
+		},
+		"seo": map[string]interface{}{
+			"title": map[string]interface{}{
+				"zh-CN": "ZX AI Hub", "zh-TW": "ZX AI Hub", "en-US": "ZX AI Hub",
+			},
+			"description": map[string]interface{}{
+				"zh-CN": "精选商品与在线服务，购买流程清晰，订单状态可查询。",
+				"zh-TW": "精選商品與線上服務，購買流程清晰，訂單狀態可查詢。",
+				"en-US": "Curated products and online services with clear purchasing and trackable orders.",
+			},
 		},
 		"scripts": make([]interface{}, 0),
 	}

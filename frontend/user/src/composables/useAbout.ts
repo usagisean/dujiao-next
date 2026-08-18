@@ -2,6 +2,7 @@ import { computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useAppStore } from '../stores/app'
 import { usePageSeo } from './usePageSeo'
+import { resolveStoreContacts } from '../config/contact'
 
 /**
  * 关于页共享逻辑（classic + vault 双模板共用）。
@@ -18,6 +19,7 @@ export function useAbout() {
 
   const aboutConfig = computed(() => appStore.config?.about || null)
   const contactConfig = computed(() => appStore.config?.contact || null)
+  const storeContacts = computed(() => resolveStoreContacts(contactConfig.value))
 
   const resolveLocalizedText = (raw: unknown): string => {
     if (!raw || typeof raw !== 'object') {
@@ -37,17 +39,17 @@ export function useAbout() {
     return ''
   }
 
-  const heroTitle = computed(() => resolveLocalizedText(aboutConfig.value?.hero?.title))
-  const heroSubtitle = computed(() => resolveLocalizedText(aboutConfig.value?.hero?.subtitle))
-  const introductionText = computed(() => resolveLocalizedText(aboutConfig.value?.introduction))
-  const servicesTitle = computed(() => resolveLocalizedText(aboutConfig.value?.services?.title))
-  const contactTitle = computed(() => resolveLocalizedText(aboutConfig.value?.contact?.title))
-  const contactText = computed(() => resolveLocalizedText(aboutConfig.value?.contact?.text))
+  const heroTitle = computed(() => resolveLocalizedText(aboutConfig.value?.hero?.title) || t('about.title'))
+  const heroSubtitle = computed(() => resolveLocalizedText(aboutConfig.value?.hero?.subtitle) || t('about.subtitle'))
+  const introductionText = computed(() => resolveLocalizedText(aboutConfig.value?.introduction) || t('about.introduction'))
+  const servicesTitle = computed(() => resolveLocalizedText(aboutConfig.value?.services?.title) || t('about.ourServices'))
+  const contactTitle = computed(() => resolveLocalizedText(aboutConfig.value?.contact?.title) || t('about.contactUs'))
+  const contactText = computed(() => resolveLocalizedText(aboutConfig.value?.contact?.text) || t('about.contactText'))
 
   const serviceItems = computed(() => {
     const raw = aboutConfig.value?.services?.items
-    if (!Array.isArray(raw)) {
-      return []
+    if (!Array.isArray(raw) || raw.length === 0) {
+      return [t('about.service1'), t('about.service2'), t('about.service3'), t('about.service4')]
     }
 
     return raw
@@ -57,7 +59,7 @@ export function useAbout() {
 
   const hasIntroduction = computed(() => introductionText.value !== '')
   const hasServices = computed(() => servicesTitle.value !== '' || serviceItems.value.length > 0)
-  const hasContactLinks = computed(() => !!(contactConfig.value?.telegram || contactConfig.value?.whatsapp))
+  const hasContactLinks = computed(() => !!(storeContacts.value.telegram.label || storeContacts.value.whatsapp.label))
   const hasContact = computed(() => contactTitle.value !== '' || contactText.value !== '' || hasContactLinks.value)
 
   onMounted(async () => {
@@ -67,7 +69,7 @@ export function useAbout() {
   })
 
   return {
-    contactConfig,
+    storeContacts,
     heroTitle,
     heroSubtitle,
     introductionText,
