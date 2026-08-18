@@ -4,14 +4,12 @@ export interface StoreContact {
 }
 
 const DEFAULT_TELEGRAM: StoreContact = {
-  label: '@ultra537',
+  label: 'TG',
   href: 'https://t.me/ultra537',
 }
 
 const DEFAULT_WHATSAPP: StoreContact = {
-  label: '@ultrazx',
-  // WhatsApp usernames are still rolling out and do not yet have a stable
-  // public profile URL format. Show the exact handle without inventing a URL.
+  label: '',
   href: '',
 }
 
@@ -28,21 +26,12 @@ function resolveTelegram(value: unknown): StoreContact {
   if (!raw || isUpstreamPlaceholder(raw)) return DEFAULT_TELEGRAM
   if (raw.startsWith('@')) {
     const username = raw.slice(1)
-    return { label: raw, href: `https://t.me/${username}` }
+    return { label: 'TG', href: `https://t.me/${username}` }
   }
   if (/^https?:\/\//i.test(raw)) {
-    const username = raw.match(/(?:t\.me|telegram\.me)\/([^/?#]+)/i)?.[1]
-    return { label: username ? `@${username}` : 'Telegram', href: raw }
+    return { label: 'TG', href: raw }
   }
-  return { label: raw, href: '' }
-}
-
-function resolveWhatsApp(value: unknown): StoreContact {
-  const raw = String(value || '').trim()
-  if (!raw || isUpstreamPlaceholder(raw)) return DEFAULT_WHATSAPP
-  if (raw.startsWith('@')) return { label: raw, href: '' }
-  if (/^https?:\/\//i.test(raw)) return { label: 'WhatsApp', href: raw }
-  return { label: raw, href: '' }
+  return { label: 'TG', href: '' }
 }
 
 export function resolveStoreContacts(contactConfig: unknown) {
@@ -52,7 +41,6 @@ export function resolveStoreContacts(contactConfig: unknown) {
 
   return {
     telegram: resolveTelegram(config.telegram),
-    whatsapp: resolveWhatsApp(config.whatsapp),
+    whatsapp: DEFAULT_WHATSAPP,
   }
 }
-

@@ -5,6 +5,42 @@ import { bannerAPI } from '../api'
 import { getImageUrl } from '../utils/image'
 import { useLocalized } from './useProduct'
 
+const localized = (text: string) => ({
+  'zh-CN': text,
+  'zh-TW': text,
+  'en-US': text,
+})
+
+const DEFAULT_TECH_BANNERS = [
+  {
+    id: 'zx-nexus',
+    image: '/banners/zx-nexus.svg',
+    badge: localized('NEXT-GEN MARKETPLACE'),
+    title: localized('ZX NEXUS'),
+    subtitle: localized('DISCOVER · CONNECT · EXPERIENCE'),
+    link_type: 'internal',
+    link_value: '/products',
+  },
+  {
+    id: 'zx-spectrum',
+    image: '/banners/zx-spectrum.svg',
+    badge: localized('SYSTEMS ONLINE'),
+    title: localized('GLOBAL ACCESS'),
+    subtitle: localized('CURATED PRODUCTS · DIGITAL SERVICES'),
+    link_type: 'internal',
+    link_value: '/products',
+  },
+  {
+    id: 'zx-flow',
+    image: '/banners/zx-flow.svg',
+    badge: localized('AUTOMATED FULFILLMENT'),
+    title: localized('INSTANT DELIVERY'),
+    subtitle: localized('FAST · CLEAR · RELIABLE'),
+    link_type: 'internal',
+    link_value: '/products',
+  },
+]
+
 export function useBannerCarousel() {
   const router = useRouter()
   const { t } = useI18n()
@@ -88,7 +124,7 @@ export function useBannerCarousel() {
 
   const heroBadge = computed(() => {
     if (!heroBanner.value) return t('home.hero.badge')
-    return getLocalizedText(heroBanner.value.title) || t('home.hero.badge')
+    return getLocalizedText(heroBanner.value.badge) || t('home.hero.badge')
   })
 
   const heroTitle = computed(() => {
@@ -137,13 +173,16 @@ export function useBannerCarousel() {
     bannerLoading.value = true
     try {
       const response = await bannerAPI.list({ position: 'home_hero', limit: 5 })
-      banners.value = response.data.data || []
+      const configuredBanners = response.data.data || []
+      banners.value = configuredBanners.length > 0
+        ? configuredBanners
+        : DEFAULT_TECH_BANNERS.map((banner) => ({ ...banner }))
       currentBannerIndex.value = 0
       startHeroAutoPlay()
     } catch (error) {
-      banners.value = []
+      banners.value = DEFAULT_TECH_BANNERS.map((banner) => ({ ...banner }))
       currentBannerIndex.value = 0
-      stopHeroAutoPlay()
+      startHeroAutoPlay()
       console.error('Failed to load banners:', error)
     } finally {
       bannerLoading.value = false
