@@ -10,12 +10,10 @@
           v-if="brandLogo"
           :src="brandLogo"
           :alt="brandSiteName"
-          class="h-8 max-w-[180px] object-contain"
+          class="h-9 w-9 shrink-0 rounded-full object-cover ring-1 ring-white/10"
         />
-        <template v-else>
-          <span class="zx-brand-mark" aria-hidden="true">ZX</span>
-          <span class="zx-wordmark-text">{{ brandSiteName }}</span>
-        </template>
+        <span v-else class="zx-brand-mark" aria-hidden="true">ZX</span>
+        <span class="zx-wordmark-text">{{ brandSiteName }}</span>
       </router-link>
 
       <!-- Desktop Menu -->
@@ -260,7 +258,7 @@ const brandSiteName = computed(() => {
 
 const brandLogo = computed(() => {
   const raw = String(appStore.config?.brand?.site_logo || '').trim()
-  return raw ? getImageUrl(raw) : ''
+  return raw && raw !== '/dj.svg' ? getImageUrl(raw) : '/zx-logo.png'
 })
 
 const toggleMobileMenu = () => {

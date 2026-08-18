@@ -1,6 +1,6 @@
 {
   "common": {
-    "siteName": "ZX AI Hub",
+    "siteName": "ZX NEXUS",
     "loading": "Loading...",
     "error": "Error",
     "success": "Success",
@@ -114,6 +114,11 @@
     "backPrevious": "Go Back"
   },
   "home": {
+    "techHero": {
+      "online": "ONLINE",
+      "edge": "GLOBAL EDGE",
+      "explore": "EXPLORE"
+    },
     "hero": {
       "title": "Good products deserve a simple, reliable buying experience",
       "subtitle": "From browsing and checkout to payment and delivery, every step stays clear and trackable. Any product type can fit—the service experience comes first.",
@@ -293,8 +298,8 @@
   },
   "about": {
     "title": "About Us",
-    "subtitle": "Meet ZX AI Hub",
-    "introduction": "ZX AI Hub is a self-service marketplace for a wide range of products and online services. We value clear information, reliable transactions, and a service experience built to last.",
+    "subtitle": "Meet ZX NEXUS",
+    "introduction": "ZX NEXUS is a self-service marketplace for a wide range of products and online services. We value clear information, reliable transactions, and a service experience built to last.",
     "ourServices": "Our Services",
     "service1": "Curated products and services",
     "service2": "A clear and transparent purchase flow",

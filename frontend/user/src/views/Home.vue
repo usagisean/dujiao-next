@@ -180,10 +180,10 @@
               <div class="flex items-center gap-3 text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-300/70 sm:text-[11px]">
                 <span class="inline-flex items-center gap-2">
                   <span class="h-1.5 w-1.5 rounded-full bg-emerald-300 shadow-[0_0_12px_rgba(110,231,183,0.85)]"></span>
-                  ONLINE
+                  {{ t('home.techHero.online') }}
                 </span>
                 <span class="h-3 w-px bg-white/15"></span>
-                <span>GLOBAL EDGE</span>
+                <span>{{ t('home.techHero.edge') }}</span>
               </div>
 
               <div v-if="bannerCount > 1" class="z-20 flex items-center gap-2">
@@ -209,16 +209,16 @@
             <div class="relative z-10 flex flex-1 items-center py-10 sm:py-12">
               <div class="max-w-3xl">
                 <span class="zx-hero-badge">
-                  <span class="h-1.5 w-1.5 rounded-full bg-cyan-200"></span>
+                  <span class="h-1.5 w-1.5 rounded-full bg-orange-300"></span>
                   {{ heroBadge }}
                 </span>
-                <p class="mt-7 text-xs font-semibold uppercase tracking-[0.3em] text-cyan-100/75">
-                  {{ brandSiteName }} / {{ currentBannerNumber }}
-                </p>
-                <h1 class="mt-3 text-4xl font-semibold tracking-[-0.055em] text-white sm:text-6xl md:text-7xl md:leading-[0.96]">
+                <h1 class="mt-7 bg-gradient-to-r from-amber-100 via-orange-200 to-cyan-200 bg-clip-text text-[1.75rem] font-medium leading-[1.12] tracking-[-0.025em] text-transparent drop-shadow-[0_8px_28px_rgba(251,146,60,0.12)] sm:text-[2rem] md:text-[2.25rem]">
                   {{ heroTitle }}
                 </h1>
-                <p class="mt-5 max-w-2xl text-xs font-medium uppercase leading-7 tracking-[0.19em] text-slate-300 sm:text-sm md:text-base">
+                <p
+                  class="mt-5 max-w-2xl text-xs font-medium leading-7 text-slate-300 sm:text-sm"
+                  :class="appStore.locale === 'en-US' ? 'uppercase tracking-[0.19em]' : 'tracking-[0.1em]'"
+                >
                   {{ heroSubtitle }}
                 </p>
 
@@ -228,7 +228,7 @@
                     @click="goToHeroLink"
                     class="zx-hero-primary inline-flex min-h-[46px] items-center gap-2 rounded-xl px-6 py-3 text-xs font-semibold tracking-[0.12em] transition"
                   >
-                    EXPLORE
+                    {{ t('home.techHero.explore') }}
                     <ArrowRight class="h-4 w-4" />
                   </button>
                   <a
@@ -236,7 +236,7 @@
                     :href="tgHref"
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="inline-flex min-h-[46px] items-center rounded-xl border border-white/15 bg-white/[0.04] px-6 py-3 text-xs font-semibold tracking-[0.14em] text-white backdrop-blur transition hover:border-cyan-200/40 hover:bg-white/[0.08]"
+                    class="inline-flex min-h-[46px] items-center rounded-xl border border-white/15 bg-white/[0.04] px-6 py-3 text-xs font-semibold tracking-[0.14em] text-white backdrop-blur transition hover:border-orange-300/45 hover:bg-white/[0.08]"
                   >
                     TG
                   </a>
@@ -244,21 +244,17 @@
               </div>
             </div>
 
-            <div class="flex items-end justify-between gap-6">
+            <div>
               <div v-if="bannerCount > 1" class="flex items-center gap-2">
                 <button
                   v-for="(_, index) in banners"
                   :key="`hero-dot-${index}`"
                   type="button"
                   class="h-1 rounded-full transition-all duration-300"
-                  :class="index === currentBannerIndex ? 'w-10 bg-white' : 'w-4 bg-white/25 hover:bg-white/55'"
+                  :class="index === currentBannerIndex ? 'w-10 bg-orange-300' : 'w-4 bg-white/25 hover:bg-orange-200/60'"
                   @click="selectHeroBanner(index)"
                   :aria-label="t('common.switchBanner', { n: index + 1 })"
                 ></button>
-              </div>
-              <div class="ml-auto text-right text-[10px] font-semibold uppercase tracking-[0.22em] text-slate-400/70">
-                <p>AUTO / 05 SEC</p>
-                <p class="mt-1 text-slate-300/80">ZX NETWORK</p>
               </div>
             </div>
           </div>
@@ -304,7 +300,7 @@
       </div>
     </section>
 
-    <template v-if="latestSectionVisible">
+    <template v-if="latestContentVisible">
     <hr class="theme-section-divider mx-4 md:mx-auto md:max-w-6xl" />
 
     <section class="relative z-10 py-12">
@@ -315,7 +311,7 @@
             <p class="mt-1 text-sm text-muted-foreground">{{ t('home.latest.description') }}</p>
           </div>
           <div class="flex items-center gap-3 text-sm">
-            <router-link v-if="blogEnabled" to="/blog" class="text-muted-foreground transition-colors hover:text-foreground">{{ t('nav.blog') }}</router-link>
+            <a v-if="blogEnabled" :href="EXTERNAL_BLOG_URL" target="_blank" rel="noopener noreferrer" class="text-muted-foreground transition-colors hover:text-foreground">{{ t('nav.blog') }}</a>
             <router-link v-if="noticeEnabled" to="/notice" class="text-muted-foreground transition-colors hover:text-foreground">{{ t('nav.notice') }}</router-link>
           </div>
         </div>
@@ -377,8 +373,8 @@ import { useProductList } from '../composables/useProductList'
 import { useProductListGroups } from '../composables/useProductListGroups'
 import { usePageSeo } from '../composables/usePageSeo'
 import { useAppStore } from '../stores/app'
-import { resolveBrandName } from '../config/brand'
 import { resolveStoreContacts } from '../config/contact'
+import { EXTERNAL_BLOG_URL } from '../config/links'
 import ProductCard from '../components/ProductCard.vue'
 import ProductListItem from '../components/ProductListItem.vue'
 import ProductQuickBuy from '../components/ProductQuickBuy.vue'
@@ -392,7 +388,6 @@ const router = useRouter()
 const { t } = useI18n()
 const { getLocalizedText } = useLocalized()
 const appStore = useAppStore()
-const brandSiteName = computed(() => resolveBrandName(appStore.config?.brand?.site_name))
 const tgHref = computed(() => resolveStoreContacts(appStore.config?.contact).telegram.href)
 
 // 英雄横幅上的玻璃态徽章(白字深底,跟随图片而非主题)
@@ -407,6 +402,7 @@ const latestSectionVisible = computed(() => blogEnabled.value || noticeEnabled.v
 // ==================== Shared State ====================
 const products = ref<any[]>([])
 const posts = ref<any[]>([])
+const latestContentVisible = computed(() => latestSectionVisible.value && posts.value.length > 0)
 const quickBuyProduct = ref<any>(null)
 const quickBuyVisible = ref(false)
 
@@ -439,7 +435,6 @@ const {
   onBannerTouchEnd,
   stopHeroAutoPlay,
 } = useBannerCarousel()
-const currentBannerNumber = computed(() => String(currentBannerIndex.value + 1).padStart(2, '0'))
 
 // ==================== List Mode ====================
 const {

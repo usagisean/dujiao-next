@@ -7,6 +7,7 @@ import {
 } from 'lucide-vue-next'
 import { useAppStore } from '../stores/app'
 import { getLocalizedText } from '../utils/resellerSiteConfig'
+import { EXTERNAL_BLOG_URL } from '../config/links'
 
 /**
  * 站点导航配置（后台「设置 → 导航」写入的 nav_config）。
@@ -45,10 +46,10 @@ interface NavConfigRaw {
     custom_items?: CustomNavItemRaw[]
 }
 
-const builtinNavDefs: Record<string, { path: string; label: string; icon: Component }> = {
-    blog: { path: '/blog', label: 'nav.blog', icon: Newspaper },
-    notice: { path: '/notice', label: 'nav.notice', icon: Bell },
-    about: { path: '/about', label: 'nav.about', icon: Info },
+const builtinNavDefs: Record<string, { path: string; label: string; icon: Component; type: 'route' | 'link'; target: '_self' | '_blank' }> = {
+    blog: { path: EXTERNAL_BLOG_URL, label: 'nav.blog', icon: Newspaper, type: 'link', target: '_blank' },
+    notice: { path: '/notice', label: 'nav.notice', icon: Bell, type: 'route', target: '_self' },
+    about: { path: '/about', label: 'nav.about', icon: Info, type: 'route', target: '_self' },
 }
 
 /** 后台自定义导航项可选的图标，key 与 SettingsNavigationTab.vue 的 presetIcons 一一对应 */
@@ -93,7 +94,7 @@ export const useNavConfig = () => {
         const result: NavItem[] = []
         for (const [key, def] of Object.entries(builtinNavDefs)) {
             if (builtin && builtin[key] === false) continue
-            result.push({ key, path: def.path, label: t(def.label), icon: def.icon, type: 'route', target: '_self' })
+            result.push({ key, path: def.path, label: t(def.label), icon: def.icon, type: def.type, target: def.target })
         }
         return result
     })

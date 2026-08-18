@@ -5,37 +5,37 @@ import { bannerAPI } from '../api'
 import { getImageUrl } from '../utils/image'
 import { useLocalized } from './useProduct'
 
-const localized = (text: string) => ({
-  'zh-CN': text,
-  'zh-TW': text,
-  'en-US': text,
+const localized = (simplified: string, traditional: string, english: string) => ({
+  'zh-CN': simplified,
+  'zh-TW': traditional,
+  'en-US': english,
 })
 
 const DEFAULT_TECH_BANNERS = [
   {
     id: 'zx-nexus',
     image: '/banners/zx-nexus.svg',
-    badge: localized('NEXT-GEN MARKETPLACE'),
-    title: localized('ZX NEXUS'),
-    subtitle: localized('DISCOVER · CONNECT · EXPERIENCE'),
+    badge: localized('新一代精选平台', '新一代精選平台', 'NEXT-GEN MARKETPLACE'),
+    title: localized('ZX NEXUS', 'ZX NEXUS', 'ZX NEXUS'),
+    subtitle: localized('探索 · 连接 · 体验', '探索 · 連結 · 體驗', 'DISCOVER · CONNECT · EXPERIENCE'),
     link_type: 'internal',
     link_value: '/products',
   },
   {
     id: 'zx-spectrum',
     image: '/banners/zx-spectrum.svg',
-    badge: localized('SYSTEMS ONLINE'),
-    title: localized('GLOBAL ACCESS'),
-    subtitle: localized('CURATED PRODUCTS · DIGITAL SERVICES'),
+    badge: localized('全球服务在线', '全球服務在線', 'SYSTEMS ONLINE'),
+    title: localized('连接世界', '連結世界', 'GLOBAL ACCESS'),
+    subtitle: localized('精选商品 · 在线服务', '精選商品 · 線上服務', 'CURATED PRODUCTS · DIGITAL SERVICES'),
     link_type: 'internal',
     link_value: '/products',
   },
   {
     id: 'zx-flow',
     image: '/banners/zx-flow.svg',
-    badge: localized('AUTOMATED FULFILLMENT'),
-    title: localized('INSTANT DELIVERY'),
-    subtitle: localized('FAST · CLEAR · RELIABLE'),
+    badge: localized('自动化交付', '自動化交付', 'AUTOMATED FULFILLMENT'),
+    title: localized('即时交付', '即時交付', 'INSTANT DELIVERY'),
+    subtitle: localized('快速 · 清晰 · 稳定', '快速 · 清晰 · 穩定', 'FAST · CLEAR · RELIABLE'),
     link_type: 'internal',
     link_value: '/products',
   },

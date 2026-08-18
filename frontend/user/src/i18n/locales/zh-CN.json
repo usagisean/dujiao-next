@@ -1,6 +1,6 @@
 {
   "common": {
-    "siteName": "ZX AI Hub",
+    "siteName": "ZX NEXUS",
     "loading": "加载中...",
     "error": "错误",
     "success": "成功",
@@ -114,6 +114,11 @@
     "backPrevious": "返回上一页"
   },
   "home": {
+    "techHero": {
+      "online": "在线",
+      "edge": "全球节点",
+      "explore": "探索"
+    },
     "hero": {
       "title": "好产品，也要有简单可靠的购买体验",
       "subtitle": "从浏览、下单、支付到交付，每一步都清晰可查。这里不限定商品类型，只专注把服务做好。",
@@ -245,8 +250,8 @@
   },
   "about": {
     "title": "关于我们",
-    "subtitle": "了解 ZX AI Hub",
-    "introduction": "ZX AI Hub 是一个面向多种商品与在线服务的自助购买平台。我们重视清晰的信息、可靠的交易流程和可持续的服务体验。",
+    "subtitle": "了解 ZX NEXUS",
+    "introduction": "ZX NEXUS 是一个面向多种商品与在线服务的自助购买平台。我们重视清晰的信息、可靠的交易流程和可持续的服务体验。",
     "ourServices": "我们的服务",
     "service1": "精选商品与服务",
     "service2": "清晰透明的购买流程",

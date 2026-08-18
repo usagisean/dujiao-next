@@ -122,10 +122,11 @@ jobs:
           for _ in $(seq 1 45); do
             health="$(curl --fail --silent --show-error --max-time 5 https://shop.zxaihub.com/health || true)"
             config="$(curl --fail --silent --show-error --max-time 5 https://shop.zxaihub.com/api/v1/public/config || true)"
-            logo="$(curl --fail --silent --show-error --max-time 5 https://shop.zxaihub.com/zx.svg || true)"
+            logo_status="$(curl --fail --silent --show-error --max-time 5 --output /tmp/zx-logo.png --write-out '%{http_code}' https://shop.zxaihub.com/zx-logo.png || true)"
             if printf '%s\n' "$health" | grep -q '"status":"ok"' \
               && printf '%s\n' "$config" | grep -Fq "\"app_version\":\"${EXPECTED_VERSION}\"" \
-              && printf '%s\n' "$logo" | grep -Fq 'ZX AI Hub'; then
+              && [[ "$logo_status" == "200" ]] \
+              && file /tmp/zx-logo.png | grep -Fq 'PNG image data'; then
               verified=true
               break
             fi

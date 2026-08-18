@@ -13,8 +13,8 @@ initTemplateOverride()
 
 const brandLog = (globalThis as any).console?.log?.bind(console)
 brandLog?.(
-  '%c ZX AI Hub %c Storefront ',
-  'background:#5b5ce2;color:#fff;padding:4px 8px;border-radius:4px 0 0 4px;font-weight:bold;',
+  '%c ZX NEXUS %c Storefront ',
+  'background:#f97316;color:#1a0d03;padding:4px 8px;border-radius:4px 0 0 4px;font-weight:bold;',
   'background:#101522;color:#f5f5f7;padding:4px 8px;border-radius:0 4px 4px 0;',
 )
 

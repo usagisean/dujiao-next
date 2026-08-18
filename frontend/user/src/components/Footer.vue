@@ -9,7 +9,7 @@
               v-if="brandLogo"
               :src="brandLogo"
               :alt="brandSiteName"
-              class="h-9 max-w-[180px] object-contain"
+              class="h-10 w-10 rounded-full object-cover ring-1 ring-border"
             />
             <div v-else class="zx-brand-mark" aria-hidden="true">
               <span>ZX</span>
@@ -37,10 +37,17 @@
           <h4 class="text-foreground font-bold mb-6 tracking-wide">{{ t('footer.quickLinks') }}</h4>
           <ul class="space-y-3 text-sm">
             <li v-for="item in quickLinks" :key="item.path">
-              <router-link :to="item.path" class="text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2 group">
+              <component
+                :is="item.external ? 'a' : 'router-link'"
+                :to="item.external ? undefined : item.path"
+                :href="item.external ? item.path : undefined"
+                :target="item.external ? '_blank' : undefined"
+                :rel="item.external ? 'noopener noreferrer' : undefined"
+                class="text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2 group"
+              >
                 <component :is="item.icon" class="w-4 h-4 shrink-0 opacity-50 group-hover:opacity-80 transition-opacity" />
                 {{ t(item.label) }}
-              </router-link>
+              </component>
             </li>
           </ul>
         </div>
@@ -98,6 +105,7 @@ import { getImageUrl } from '../utils/image'
 import { getLocalizedText } from '../utils/resellerSiteConfig'
 import { resolveBrandName } from '../config/brand'
 import { resolveStoreContacts } from '../config/contact'
+import { EXTERNAL_BLOG_URL } from '../config/links'
 
 const { t } = useI18n()
 const appStore = useAppStore()
@@ -120,14 +128,21 @@ const brandDescription = computed(() => {
 
 const brandLogo = computed(() => {
   const raw = String(config.value?.brand?.site_logo || '').trim()
-  return raw ? getImageUrl(raw) : ''
+  return raw && raw !== '/dj.svg' ? getImageUrl(raw) : '/zx-logo.png'
 })
 
 const isListMode = computed(() => config.value?.template_mode === 'list')
 const navConfig = computed(() => config.value?.nav_config as { builtin?: Record<string, boolean> } | undefined)
 
-const quickLinks = computed(() => {
-  const items = [
+interface QuickLink {
+  path: string
+  label: string
+  icon: typeof Home
+  external?: boolean
+}
+
+const quickLinks = computed<QuickLink[]>(() => {
+  const items: QuickLink[] = [
     { path: '/', label: 'nav.home', icon: Home },
   ]
   if (!isListMode.value) {
@@ -135,7 +150,7 @@ const quickLinks = computed(() => {
   }
   const builtin = navConfig.value?.builtin
   if (!builtin || builtin.blog !== false) {
-    items.push({ path: '/blog', label: 'nav.blog', icon: Newspaper })
+    items.push({ path: EXTERNAL_BLOG_URL, label: 'nav.blog', icon: Newspaper, external: true })
   }
   if (!builtin || builtin.about !== false) {
     items.push({ path: '/about', label: 'nav.about', icon: Info })

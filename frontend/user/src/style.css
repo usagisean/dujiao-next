@@ -94,9 +94,9 @@
   --ui-text-on-accent: #ffffff;
   --ui-border: rgba(0, 0, 0, 0.12);
   --ui-border-strong: rgba(0, 0, 0, 0.2);
-  --ui-accent: #5b5ce2;
-  --ui-accent-hover: #4b4ccc;
-  --ui-accent-soft: rgba(91, 92, 226, 0.14);
+  --ui-accent: #c65f14;
+  --ui-accent-hover: #a94b0d;
+  --ui-accent-soft: rgba(198, 95, 20, 0.14);
   --ui-success: #2f8f6f;
   --ui-success-soft: rgba(47, 143, 111, 0.14);
   --ui-warning: #b06b00;
@@ -105,7 +105,7 @@
   --ui-danger-soft: rgba(201, 52, 47, 0.15);
   --ui-info: #0a84ff;
   --ui-info-soft: rgba(10, 132, 255, 0.14);
-  --ui-focus-ring: rgba(91, 92, 226, 0.24);
+  --ui-focus-ring: rgba(198, 95, 20, 0.26);
   --ui-radius-sm: 0.5rem;
   --ui-radius-md: 0.75rem;
   --ui-radius-lg: 1rem;
@@ -172,12 +172,12 @@
   --ui-text-primary: #f5f5f7;
   --ui-text-secondary: #d2d2d7;
   --ui-text-muted: #8e8e93;
-  --ui-text-on-accent: #f5f5f7;
   --ui-border: rgba(255, 255, 255, 0.14);
   --ui-border-strong: rgba(255, 255, 255, 0.24);
-  --ui-accent: #8b8cf8;
-  --ui-accent-hover: #a7a8ff;
-  --ui-accent-soft: rgba(139, 140, 248, 0.2);
+  --ui-text-on-accent: #1a0d03;
+  --ui-accent: #fb923c;
+  --ui-accent-hover: #fbbf24;
+  --ui-accent-soft: rgba(251, 146, 60, 0.19);
   --ui-success: #30d158;
   --ui-success-soft: rgba(48, 209, 88, 0.22);
   --ui-warning: #ffd60a;
@@ -186,7 +186,7 @@
   --ui-danger-soft: rgba(255, 69, 58, 0.24);
   --ui-info: #64d2ff;
   --ui-info-soft: rgba(100, 210, 255, 0.24);
-  --ui-focus-ring: rgba(139, 140, 248, 0.32);
+  --ui-focus-ring: rgba(251, 146, 60, 0.34);
   --ui-shadow-1: 0 14px 30px -22px rgba(0, 0, 0, 0.72);
   --ui-shadow-2: 0 24px 48px -28px rgba(0, 0, 0, 0.78);
   --ui-shadow-3: 0 36px 76px -34px rgba(0, 0, 0, 0.84);
@@ -301,14 +301,14 @@ html[data-telegram-mini-app="true"] body {
 
   .zx-brand-mark {
     @apply inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-xl text-[0.7rem] font-black tracking-[-0.04em] text-white;
-    background: linear-gradient(135deg, #818cf8 0%, #6366f1 48%, #06b6d4 130%);
-    box-shadow: 0 8px 22px -10px rgba(79, 70, 229, 0.9), inset 0 1px 0 rgba(255, 255, 255, 0.28);
+    background: linear-gradient(135deg, #fbbf24 0%, #f97316 56%, #ea580c 100%);
+    box-shadow: 0 8px 22px -10px rgba(234, 88, 12, 0.78), inset 0 1px 0 rgba(255, 255, 255, 0.28);
     transition: transform 200ms var(--ui-ease-out), box-shadow 200ms var(--ui-ease-out);
   }
 
   .zx-wordmark:hover .zx-brand-mark {
     transform: translateY(-1px) rotate(-2deg);
-    box-shadow: 0 12px 26px -10px rgba(79, 70, 229, 0.95), inset 0 1px 0 rgba(255, 255, 255, 0.32);
+    box-shadow: 0 12px 26px -10px rgba(234, 88, 12, 0.88), inset 0 1px 0 rgba(255, 255, 255, 0.32);
   }
 
   .zx-home-hero::before {
@@ -318,7 +318,7 @@ html[data-telegram-mini-app="true"] body {
     height: 34rem;
     pointer-events: none;
     background:
-      radial-gradient(circle at 18% 12%, rgba(99, 102, 241, 0.12), transparent 33%),
+      radial-gradient(circle at 18% 12%, rgba(249, 115, 22, 0.13), transparent 33%),
       radial-gradient(circle at 82% 28%, rgba(6, 182, 212, 0.1), transparent 30%);
   }
 
@@ -336,10 +336,10 @@ html[data-telegram-mini-app="true"] body {
 
   .zx-hero-mesh {
     background:
-      radial-gradient(circle at 10% 22%, rgba(99, 102, 241, 0.55), transparent 31%),
-      radial-gradient(circle at 86% 14%, rgba(6, 182, 212, 0.28), transparent 29%),
-      radial-gradient(circle at 68% 88%, rgba(124, 58, 237, 0.3), transparent 34%),
-      linear-gradient(145deg, #090d18 0%, #111a32 55%, #071420 100%);
+      radial-gradient(circle at 10% 22%, rgba(249, 115, 22, 0.5), transparent 31%),
+      radial-gradient(circle at 86% 14%, rgba(6, 182, 212, 0.22), transparent 29%),
+      radial-gradient(circle at 68% 88%, rgba(245, 158, 11, 0.25), transparent 34%),
+      linear-gradient(145deg, #090d18 0%, #1f160f 55%, #07151a 100%);
   }
 
   .zx-hero-grid {
@@ -352,21 +352,21 @@ html[data-telegram-mini-app="true"] body {
   }
 
   .zx-hero-badge {
-    @apply inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-[10px] font-semibold tracking-[0.16em] text-cyan-50 backdrop-blur sm:text-xs;
-    border-color: rgba(165, 243, 252, 0.22);
-    background: rgba(8, 47, 73, 0.22);
+    @apply inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-[10px] font-semibold tracking-[0.16em] text-amber-50 backdrop-blur sm:text-xs;
+    border-color: rgba(253, 186, 116, 0.25);
+    background: rgba(124, 45, 18, 0.22);
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
   }
 
   .zx-hero-primary {
     color: #090d18;
-    background: linear-gradient(135deg, #ffffff 0%, #dff8ff 100%);
-    box-shadow: 0 14px 30px -16px rgba(165, 243, 252, 0.7);
+    background: linear-gradient(135deg, #fed7aa 0%, #fb923c 100%);
+    box-shadow: 0 14px 30px -16px rgba(251, 146, 60, 0.72);
   }
 
   .zx-hero-primary:hover {
     transform: translateY(-2px);
-    box-shadow: 0 18px 34px -16px rgba(165, 243, 252, 0.78);
+    box-shadow: 0 18px 34px -16px rgba(251, 146, 60, 0.82);
   }
 
   .zx-empty-state {
