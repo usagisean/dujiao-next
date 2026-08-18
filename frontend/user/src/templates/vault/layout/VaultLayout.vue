@@ -110,8 +110,7 @@
           <h4 class="mb-3 text-sm font-bold">{{ t('vault.footer.support') }}</h4>
           <RouterLink v-if="aboutEnabled" to="/about" class="flex items-center gap-[7px] py-[5px] text-[14.5px] text-muted-foreground hover:text-primary"><Info class="h-4 w-4" /> {{ t('nav.about') }}</RouterLink>
           <RouterLink to="/guest/orders" class="flex items-center gap-[7px] py-[5px] text-[14.5px] text-muted-foreground hover:text-primary"><ClipboardList class="h-4 w-4" /> {{ t('navbar.guestOrders') }}</RouterLink>
-          <component :is="contacts.telegram.href ? 'a' : 'div'" :href="contacts.telegram.href || undefined" :target="contacts.telegram.href ? '_blank' : undefined" rel="noopener noreferrer" class="flex items-center gap-[7px] py-[5px] text-[14.5px] text-muted-foreground hover:text-primary"><Send class="h-4 w-4" /> Telegram · {{ contacts.telegram.label }}</component>
-          <component :is="contacts.whatsapp.href ? 'a' : 'div'" :href="contacts.whatsapp.href || undefined" :target="contacts.whatsapp.href ? '_blank' : undefined" rel="noopener noreferrer" class="flex items-center gap-[7px] py-[5px] text-[14.5px] text-muted-foreground hover:text-primary"><MessageCircle class="h-4 w-4" /> WhatsApp · {{ contacts.whatsapp.label }}</component>
+          <component :is="contacts.telegram.href ? 'a' : 'div'" :href="contacts.telegram.href || undefined" :target="contacts.telegram.href ? '_blank' : undefined" rel="noopener noreferrer" class="flex items-center gap-[7px] py-[5px] text-[14.5px] text-muted-foreground hover:text-primary"><Send class="h-4 w-4" /> {{ contacts.telegram.label }}</component>
         </div>
         <div>
           <h4 class="mb-3 text-sm font-bold">{{ t('vault.footer.legal') }}</h4>
@@ -135,7 +134,7 @@ import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import {
   Search, Moon, Sun, ShoppingCart, Languages, Menu, X, User, Info, ClipboardList, LogOut,
-  LayoutGrid, Send, MessageCircle,
+  LayoutGrid, Send,
 } from 'lucide-vue-next'
 import { useAppStore } from '../../../stores/app'
 import { useCartStore } from '../../../stores/cart'
