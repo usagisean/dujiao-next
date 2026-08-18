@@ -1,6 +1,6 @@
 {
   "common": {
-    "siteName": "Dujiao-Next",
+    "siteName": "ZX AI Hub",
     "loading": "加载中...",
     "error": "错误",
     "success": "成功",
@@ -54,14 +54,14 @@
   },
   "vault": {
     "hero": {
-      "badge": "即时发货 · 数字商品",
-      "titleLead": "买卡密、充值、会员，",
-      "titleHl": "秒到账。",
-      "lede": "游戏点卡、流媒体会员、软件授权、礼品卡、AI 工具 —— 付款后自动发货，凭证立即送达。",
+      "badge": "精选商品 · 便捷购买",
+      "titleLead": "找到需要的商品，",
+      "titleHl": "轻松完成购买。",
+      "lede": "从商品浏览、下单支付到订单查询，每一步都简单、清晰、可追踪。",
       "searchButton": "搜索",
       "hot": "热门：",
-      "trustFast": "极速自动发货",
-      "trustSecure": "加密结算 · 凭证仅你可见",
+      "trustFast": "便捷的购买流程",
+      "trustSecure": "可靠结算 · 订单可查询",
       "trustRefund": "问题订单及时处理"
     },
     "categoriesTitle": "按分类逛",
@@ -70,7 +70,7 @@
       "shop": "商城",
       "support": "支持",
       "legal": "条款",
-      "tagline": "数字商品自动发货平台。卡密、授权、充值，付款即交付。",
+      "tagline": "精选商品与在线服务，购买流程清晰，订单状态可查询。",
       "faq": "常见问题",
       "payAlipay": "支付宝",
       "payWechat": "微信"
@@ -97,7 +97,7 @@
     "label": "购买流程进度"
   },
   "footer": {
-    "description": "专业的在线工作室，为您提供优质的产品和服务。",
+    "description": "精选商品与在线服务平台，以清晰的流程提供便捷、可靠的购买体验。",
     "quickLinks": "快速链接",
     "contact": "联系我们",
     "rights": "保留所有权利",
@@ -115,10 +115,19 @@
   },
   "home": {
     "hero": {
-      "title": "Dujiao-Next · D&N",
-      "subtitle": "专业的产品与服务提供商",
+      "title": "好产品，也要有简单可靠的购买体验",
+      "subtitle": "从浏览、下单、支付到交付，每一步都清晰可查。这里不限定商品类型，只专注把服务做好。",
       "cta": "浏览商品",
-      "badge": "新一代数字商店"
+      "badge": "精选商品 · 在线服务",
+      "orderLookup": "查询订单",
+      "panelEyebrow": "购买流程",
+      "panelTitle": "从选择到交付，全程清晰",
+      "panelStatus": "订单状态实时可查询",
+      "steps": {
+        "select": "选择适合你的商品或服务",
+        "checkout": "确认订单并完成支付",
+        "track": "查询状态与交付结果"
+      }
     },
     "stats": {
       "activeUsers": "活跃用户",
@@ -127,9 +136,12 @@
       "support": "技术支持"
     },
     "featured": {
+      "eyebrow": "精选服务",
       "title": "精选商品",
-      "description": "探索我们精心挑选的优质数字资产系列。",
+      "description": "选择适合你的商品与服务，更多内容正在持续上架。",
       "empty": "暂无商品",
+      "emptyTitle": "首批商品正在准备中",
+      "emptyDescription": "我们正在整理商品与交付说明，上架后即可在这里直接选购。",
       "viewAll": "查看全部商品"
     },
     "cta": {
@@ -140,6 +152,24 @@
     "latest": {
       "title": "最新动态",
       "description": "随时掌握我们的最新消息和公告"
+    },
+    "highlights": {
+      "payment": {
+        "title": "支付确认",
+        "description": "订单状态以真实支付结果为准"
+      },
+      "delivery": {
+        "title": "清晰交付",
+        "description": "支付完成后按商品说明处理"
+      },
+      "tracking": {
+        "title": "订单可查",
+        "description": "游客也能随时查询购买进度"
+      },
+      "support": {
+        "title": "持续服务",
+        "description": "购买前后都有清晰的服务入口"
+      }
     }
   },
   "products": {
@@ -215,15 +245,15 @@
   },
   "about": {
     "title": "关于我们",
-    "subtitle": "了解Dujiao-Next",
-    "introduction": "Dujiao-Next（D&N）是一家专业的在线工作室，致力于为客户提供优质的产品和服务。我们以创新、专业、高效为核心价值观，不断追求卓越，为客户创造价值。",
+    "subtitle": "了解 ZX AI Hub",
+    "introduction": "ZX AI Hub 是一个面向多种商品与在线服务的自助购买平台。我们重视清晰的信息、可靠的交易流程和可持续的服务体验。",
     "ourServices": "我们的服务",
-    "service1": "优质商品推荐与销售",
-    "service2": "专业的售前咨询服务",
-    "service3": "快速响应的客户支持",
-    "service4": "定期更新的产品信息",
+    "service1": "精选商品与服务",
+    "service2": "清晰透明的购买流程",
+    "service3": "可靠的订单与交付支持",
+    "service4": "持续更新的产品信息",
     "contactUs": "联系我们",
-    "contactText": "如果您对我们的产品或服务有任何疑问，欢迎通过以下方式联系我们："
+    "contactText": "如果您对商品或订单有任何疑问，欢迎通过站内提供的方式联系我们。"
   },
   "navbar": {
     "cart": "购物车",

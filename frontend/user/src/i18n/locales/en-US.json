@@ -1,6 +1,6 @@
 {
   "common": {
-    "siteName": "Dujiao-Next",
+    "siteName": "ZX AI Hub",
     "loading": "Loading...",
     "error": "Error",
     "success": "Success",
@@ -54,15 +54,15 @@
   },
   "vault": {
     "hero": {
-      "badge": "Instant delivery · Digital goods",
-      "titleLead": "Top-ups, keys, memberships — ",
-      "titleHl": "delivered in seconds.",
-      "lede": "Game cards, streaming memberships, software licenses, gift cards and AI tools — auto-delivered the moment you pay.",
+      "badge": "Curated Products · Easy Checkout",
+      "titleLead": "Find what you need,",
+      "titleHl": "buy with confidence.",
+      "lede": "From browsing and payment to order tracking, every step is simple, clear, and traceable.",
       "searchButton": "Search",
       "hot": "Popular:",
-      "trustFast": "Lightning-fast auto delivery",
-      "trustSecure": "Encrypted checkout · vouchers stay private",
-      "trustRefund": "Issues handled promptly"
+      "trustFast": "A convenient purchase flow",
+      "trustSecure": "Reliable checkout · Trackable orders",
+      "trustRefund": "Prompt help for order issues"
     },
     "categoriesTitle": "Browse by category",
     "allCategories": "All categories",
@@ -70,7 +70,7 @@
       "shop": "Shop",
       "support": "Support",
       "legal": "Legal",
-      "tagline": "Digital goods, auto-delivered. Keys, licenses and top-ups delivered on payment.",
+      "tagline": "Curated products and online services with clear purchasing and trackable orders.",
       "faq": "FAQ",
       "payAlipay": "Alipay",
       "payWechat": "WeChat"
@@ -97,7 +97,7 @@
     "label": "Checkout progress"
   },
   "footer": {
-    "description": "Professional online studio providing quality products and services.",
+    "description": "A curated marketplace for products and online services, built around a clear and reliable purchase experience.",
     "quickLinks": "Quick Links",
     "contact": "Contact Us",
     "rights": "All rights reserved",
@@ -115,10 +115,19 @@
   },
   "home": {
     "hero": {
-      "title": "Dujiao-Next",
-      "subtitle": "Professional Products and Services Provider",
+      "title": "Good products deserve a simple, reliable buying experience",
+      "subtitle": "From browsing and checkout to payment and delivery, every step stays clear and trackable. Any product type can fit—the service experience comes first.",
       "cta": "Browse Products",
-      "badge": "Next Gen Digital Store"
+      "badge": "Curated Products · Online Services",
+      "orderLookup": "Track an Order",
+      "panelEyebrow": "Purchase Flow",
+      "panelTitle": "Clear from selection to delivery",
+      "panelStatus": "Order status is always available",
+      "steps": {
+        "select": "Choose a product or service",
+        "checkout": "Confirm and complete payment",
+        "track": "Track status and delivery"
+      }
     },
     "stats": {
       "activeUsers": "Active Users",
@@ -127,9 +136,12 @@
       "support": "Support"
     },
     "featured": {
+      "eyebrow": "Curated Services",
       "title": "Featured Products",
-      "description": "Discover our premium collection of digital assets, curated for excellence.",
+      "description": "Choose products and services that fit your needs. More are being added.",
       "empty": "No products available",
+      "emptyTitle": "Our first products are on the way",
+      "emptyDescription": "We are preparing product details and delivery instructions. You will be able to order here soon.",
       "viewAll": "View All Products"
     },
     "cta": {
@@ -140,6 +152,24 @@
     "latest": {
       "title": "Latest Updates",
       "description": "Stay updated with our latest news and announcements"
+    },
+    "highlights": {
+      "payment": {
+        "title": "Payment Verified",
+        "description": "Order status follows the actual payment result"
+      },
+      "delivery": {
+        "title": "Clear Delivery",
+        "description": "Fulfilled according to each product's details"
+      },
+      "tracking": {
+        "title": "Order Tracking",
+        "description": "Guest purchases can be checked at any time"
+      },
+      "support": {
+        "title": "Ongoing Support",
+        "description": "Clear service access before and after purchase"
+      }
     }
   },
   "products": {
@@ -263,15 +293,15 @@
   },
   "about": {
     "title": "About Us",
-    "subtitle": "Learn about Dujiao-Next",
-    "introduction": "Dujiao-Next is a professional online studio dedicated to providing high-quality products and services to our customers. Innovation, professionalism, and efficiency are our core values, and we constantly pursue excellence to create value for our customers.",
+    "subtitle": "Meet ZX AI Hub",
+    "introduction": "ZX AI Hub is a self-service marketplace for a wide range of products and online services. We value clear information, reliable transactions, and a service experience built to last.",
     "ourServices": "Our Services",
-    "service1": "Premium Product Recommendations & Sales",
-    "service2": "Professional Pre-sales Consulting",
-    "service3": "Responsive Customer Support",
-    "service4": "Regular Product Updates",
+    "service1": "Curated products and services",
+    "service2": "A clear and transparent purchase flow",
+    "service3": "Reliable order and delivery support",
+    "service4": "Continuously updated product information",
     "contactUs": "Contact Us",
-    "contactText": "If you have any questions about our products or services, please feel free to contact us via:"
+    "contactText": "If you have questions about a product or order, contact us through the channels provided on this site."
   },
   "navbar": {
     "cart": "Cart",

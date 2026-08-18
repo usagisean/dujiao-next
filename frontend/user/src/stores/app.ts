@@ -6,6 +6,7 @@ import { getImageUrl } from '../utils/image'
 import { getLocalizedText } from '../utils/resellerSiteConfig'
 import { detectLocale, setI18nLocale } from '../i18n'
 import { useHead } from '@unhead/vue'
+import { resolveBrandName } from '../config/brand'
 
 export const useAppStore = defineStore('app', () => {
     // 与 vue-i18n 复用同一套语言检测逻辑，避免首次访问时
@@ -17,7 +18,7 @@ export const useAppStore = defineStore('app', () => {
     const serverTimeOffset = ref(0)
     const siteIconHref = computed(() => {
         const siteIcon = String(config.value?.brand?.site_icon || '').trim()
-        return siteIcon ? getImageUrl(siteIcon) : '/dj.svg'
+        return siteIcon && siteIcon !== '/dj.svg' ? getImageUrl(siteIcon) : '/zx.svg'
     })
     const isResellerTenant = computed(() => {
         return String(config.value?.tenant?.mode || '').trim().toLowerCase() === 'reseller'
@@ -41,8 +42,7 @@ export const useAppStore = defineStore('app', () => {
             const lang = locale.value
             const localized = getLocalizedText(seo?.title, lang)
             if (localized) return String(localized).trim() || undefined
-            const siteName = String(config.value?.brand?.site_name || '').trim()
-            return siteName || undefined
+            return resolveBrandName(config.value?.brand?.site_name)
         },
         link: () => [{ key: 'favicon', rel: 'icon', href: siteIconHref.value }],
         meta: () => {
