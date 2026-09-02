@@ -12,7 +12,7 @@
             <Transition name="banner-fade" mode="out-in">
               <img v-if="!bannerLoading && heroImage" :src="heroImage" :key="heroImage" class="absolute inset-0 h-full w-full object-cover" />
             </Transition>
-            <div class="absolute inset-0 bg-black/50"></div>
+            <div class="zx-list-hero-overlay absolute inset-0"></div>
             <div v-if="bannerLoading" class="relative flex min-h-[200px] flex-col justify-between p-5 sm:min-h-[240px] sm:p-6 md:min-h-[320px] md:p-10">
               <div class="space-y-3">
                 <div class="h-5 w-24 theme-skeleton rounded-full" style="background: rgba(255,255,255,0.35)"></div>
@@ -23,12 +23,12 @@
             <div v-else class="relative flex min-h-[200px] flex-col justify-between p-5 sm:min-h-[240px] sm:p-6 md:min-h-[320px] md:p-10">
               <div v-if="bannerCount > 1" class="mb-3 flex items-center justify-end gap-2">
                 <button type="button"
-                  class="inline-flex h-8 w-8 items-center justify-center rounded-full border border-white/30 bg-black/20 text-white transition hover:bg-black/35 md:h-9 md:w-9"
+                  class="zx-hero-nav inline-flex h-8 w-8 items-center justify-center rounded-full border transition md:h-9 md:w-9"
                   @click="handlePrevHeroBanner" :aria-label="t('common.previousBanner')">
                   <ChevronLeft class="h-3.5 w-3.5" />
                 </button>
                 <button type="button"
-                  class="inline-flex h-8 w-8 items-center justify-center rounded-full border border-white/30 bg-black/20 text-white transition hover:bg-black/35 md:h-9 md:w-9"
+                  class="zx-hero-nav inline-flex h-8 w-8 items-center justify-center rounded-full border transition md:h-9 md:w-9"
                   @click="handleNextHeroBanner" :aria-label="t('common.nextBanner')">
                   <ChevronRight class="h-3.5 w-3.5" />
                 </button>
@@ -38,17 +38,17 @@
                   <span class="h-2 w-2 rounded-full bg-emerald-300"></span>
                   {{ heroBadge }}
                 </span>
-                <h1 class="max-w-4xl text-xl font-semibold tracking-[-0.02em] text-white sm:text-2xl md:text-3xl">
+                <h1 class="zx-list-hero-title max-w-4xl text-xl font-semibold tracking-[-0.02em] sm:text-2xl md:text-3xl">
                   {{ heroTitle }}
                 </h1>
-                <p class="max-w-3xl text-xs leading-relaxed text-gray-100 sm:text-sm">
+                <p class="zx-list-hero-subtitle max-w-3xl text-xs leading-relaxed sm:text-sm">
                   {{ heroSubtitle }}
                 </p>
               </div>
               <div v-if="bannerCount > 1" class="mt-4 flex items-center gap-2">
                 <button v-for="(_, bIdx) in banners" :key="`list-dot-${bIdx}`" type="button"
                   class="h-2 rounded-full transition-all"
-                  :class="bIdx === currentBannerIndex ? 'w-6 bg-white' : 'w-2 bg-white/45 hover:bg-white/70'"
+                  :class="bIdx === currentBannerIndex ? 'zx-hero-dot-active w-6' : 'zx-hero-dot w-2'"
                   @click="selectHeroBanner(bIdx)"></button>
               </div>
             </div>
@@ -177,19 +177,19 @@
 
           <div class="relative flex min-h-[430px] flex-col p-6 sm:min-h-[470px] sm:p-8 md:min-h-[520px] md:p-12 lg:p-14">
             <div class="flex items-center justify-between gap-5">
-              <div class="flex items-center gap-3 text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-300/70 sm:text-[11px]">
+              <div class="zx-hero-meta flex items-center gap-3 text-[10px] font-semibold uppercase tracking-[0.2em] sm:text-[11px]">
                 <span class="inline-flex items-center gap-2">
                   <span class="h-1.5 w-1.5 rounded-full bg-emerald-300 shadow-[0_0_12px_rgba(110,231,183,0.85)]"></span>
                   {{ t('home.techHero.online') }}
                 </span>
-                <span class="h-3 w-px bg-white/15"></span>
+                <span class="zx-hero-divider h-3 w-px"></span>
                 <span>{{ t('home.techHero.edge') }}</span>
               </div>
 
               <div v-if="bannerCount > 1" class="z-20 flex items-center gap-2">
               <button
                 type="button"
-                class="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/15 bg-black/20 text-white/80 backdrop-blur transition hover:border-white/30 hover:bg-white/10 hover:text-white md:h-10 md:w-10"
+                class="zx-hero-nav inline-flex h-9 w-9 items-center justify-center rounded-full border backdrop-blur transition md:h-10 md:w-10"
                 @click="handlePrevHeroBanner"
                 :aria-label="t('common.previousBanner')"
               >
@@ -197,7 +197,7 @@
               </button>
               <button
                 type="button"
-                class="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/15 bg-black/20 text-white/80 backdrop-blur transition hover:border-white/30 hover:bg-white/10 hover:text-white md:h-10 md:w-10"
+                class="zx-hero-nav inline-flex h-9 w-9 items-center justify-center rounded-full border backdrop-blur transition md:h-10 md:w-10"
                 @click="handleNextHeroBanner"
                 :aria-label="t('common.nextBanner')"
               >
@@ -212,11 +212,11 @@
                   <span class="h-1.5 w-1.5 rounded-full bg-orange-300"></span>
                   {{ heroBadge }}
                 </span>
-                <h1 class="mt-7 bg-gradient-to-r from-amber-100 via-orange-200 to-cyan-200 bg-clip-text text-[1.75rem] font-medium leading-[1.12] tracking-[-0.025em] text-transparent drop-shadow-[0_8px_28px_rgba(251,146,60,0.12)] sm:text-[2rem] md:text-[2.25rem]">
+                <h1 class="zx-hero-title mt-7 bg-clip-text text-[1.75rem] font-medium leading-[1.12] tracking-[-0.025em] text-transparent sm:text-[2rem] md:text-[2.25rem]">
                   {{ heroTitle }}
                 </h1>
                 <p
-                  class="mt-5 max-w-2xl text-xs font-medium leading-7 text-slate-300 sm:text-sm"
+                  class="zx-hero-subtitle mt-5 max-w-2xl text-xs font-medium leading-7 sm:text-sm"
                   :class="appStore.locale === 'en-US' ? 'uppercase tracking-[0.19em]' : 'tracking-[0.1em]'"
                 >
                   {{ heroSubtitle }}
@@ -236,7 +236,7 @@
                     :href="tgHref"
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="inline-flex min-h-[46px] items-center rounded-xl border border-white/15 bg-white/[0.04] px-6 py-3 text-xs font-semibold tracking-[0.14em] text-white backdrop-blur transition hover:border-orange-300/45 hover:bg-white/[0.08]"
+                    class="zx-hero-secondary inline-flex min-h-[46px] items-center rounded-xl border px-6 py-3 text-xs font-semibold tracking-[0.14em] backdrop-blur transition"
                   >
                     TG
                   </a>
@@ -251,7 +251,7 @@
                   :key="`hero-dot-${index}`"
                   type="button"
                   class="h-1 rounded-full transition-all duration-300"
-                  :class="index === currentBannerIndex ? 'w-10 bg-orange-300' : 'w-4 bg-white/25 hover:bg-orange-200/60'"
+                  :class="index === currentBannerIndex ? 'zx-hero-dot-active w-10' : 'zx-hero-dot w-4'"
                   @click="selectHeroBanner(index)"
                   :aria-label="t('common.switchBanner', { n: index + 1 })"
                 ></button>
@@ -390,8 +390,7 @@ const { getLocalizedText } = useLocalized()
 const appStore = useAppStore()
 const tgHref = computed(() => resolveStoreContacts(appStore.config?.contact).telegram.href)
 
-// 英雄横幅上的玻璃态徽章(白字深底,跟随图片而非主题)
-const heroBadgeClass = 'inline-flex items-center gap-2 rounded-md border border-white/25 bg-black/55 px-2.5 py-0.5 text-xs font-semibold uppercase tracking-wider text-white backdrop-blur-sm'
+const heroBadgeClass = 'zx-hero-badge inline-flex items-center gap-2 rounded-md border px-2.5 py-0.5 text-xs font-semibold uppercase tracking-wider backdrop-blur-sm'
 
 const templateMode = computed(() => appStore.config?.template_mode || 'card')
 const navBuiltin = computed(() => (appStore.config?.nav_config as { builtin?: Record<string, boolean> } | undefined)?.builtin)
