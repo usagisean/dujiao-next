@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 720" role="img" aria-labelledby="title desc">
+  <title id="title">ZX automated flow — light</title>
+  <desc id="desc">A bright automated flow visual with emerald and cyan signals.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#fffdf9"/>
+      <stop offset=".58" stop-color="#f4fbf9"/>
+      <stop offset="1" stop-color="#eaf9fb"/>
+    </linearGradient>
+    <linearGradient id="flow" x1="0" y1="0" x2="1" y2="0">
+      <stop stop-color="#059669" stop-opacity="0"/>
+      <stop offset=".25" stop-color="#059669"/>
+      <stop offset=".7" stop-color="#0891b2"/>
+      <stop offset="1" stop-color="#0891b2" stop-opacity="0"/>
+    </linearGradient>
+    <radialGradient id="glow">
+      <stop stop-color="#14b8a6" stop-opacity=".18"/>
+      <stop offset="1" stop-color="#14b8a6" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="dots" width="34" height="34" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1" fill="#147d75" fill-opacity=".12"/>
+    </pattern>
+  </defs>
+  <rect width="1600" height="720" fill="url(#bg)"/>
+  <rect x="720" width="880" height="720" fill="url(#dots)"/>
+  <ellipse cx="1260" cy="360" rx="460" ry="380" fill="url(#glow)"/>
+  <path d="M720 164h176c36 0 58 22 58 58v24c0 36 22 58 58 58h426" fill="none" stroke="url(#flow)" stroke-width="2"/>
+  <path d="M680 360h224c36 0 58 22 58 58v24c0 36 22 58 58 58h470" fill="none" stroke="url(#flow)" stroke-width="3"/>
+  <path d="M760 562h156c36 0 58-22 58-58v-26c0-36 22-58 58-58h420" fill="none" stroke="url(#flow)" stroke-opacity=".55" stroke-width="2"/>
+  <g fill="#ffffff" fill-opacity=".74" stroke="#0f9989" stroke-width="2">
+    <rect x="898" y="278" width="54" height="54" rx="12"/>
+    <rect x="1172" y="278" width="54" height="54" rx="12"/>
+    <rect x="1410" y="278" width="54" height="54" rx="12"/>
+  </g>
+  <g fill="#0f9989">
+    <circle cx="925" cy="305" r="6"/><circle cx="1199" cy="305" r="6"/><circle cx="1437" cy="305" r="6"/>
+  </g>
+  <g fill="none" stroke="#0891b2" stroke-opacity=".18">
+    <rect x="830" y="224" width="688" height="184" rx="34"/>
+    <rect x="864" y="246" width="620" height="140" rx="26"/>
+  </g>
+  <circle cx="1199" cy="305" r="74" fill="none" stroke="#0f9989" stroke-opacity=".13"/>
+  <circle cx="1199" cy="305" r="102" fill="none" stroke="#0891b2" stroke-opacity=".09"/>
+  <g fill="#3e756f" fill-opacity=".24">
+    <circle cx="760" cy="92" r="2"/><circle cx="1060" cy="110" r="2"/><circle cx="1510" cy="142" r="2"/>
+    <circle cx="824" cy="636" r="2"/><circle cx="1320" cy="612" r="2"/><circle cx="1538" cy="540" r="2"/>
+  </g>
+</svg>

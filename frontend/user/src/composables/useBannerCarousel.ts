@@ -3,6 +3,7 @@ import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { bannerAPI } from '../api'
 import { getImageUrl } from '../utils/image'
+import { useTheme } from '../utils/theme'
 import { useLocalized } from './useProduct'
 
 const localized = (simplified: string, traditional: string, english: string) => ({
@@ -15,6 +16,8 @@ const DEFAULT_TECH_BANNERS = [
   {
     id: 'zx-nexus',
     image: '/banners/zx-nexus.svg',
+    image_dark: '/banners/zx-nexus.svg',
+    image_light: '/banners/zx-nexus-light.svg',
     badge: localized('新一代精选平台', '新一代精選平台', 'NEXT-GEN MARKETPLACE'),
     title: localized('ZX NEXUS', 'ZX NEXUS', 'ZX NEXUS'),
     subtitle: localized('探索 · 连接 · 体验', '探索 · 連結 · 體驗', 'DISCOVER · CONNECT · EXPERIENCE'),
@@ -24,6 +27,8 @@ const DEFAULT_TECH_BANNERS = [
   {
     id: 'zx-spectrum',
     image: '/banners/zx-spectrum.svg',
+    image_dark: '/banners/zx-spectrum.svg',
+    image_light: '/banners/zx-spectrum-light.svg',
     badge: localized('全球服务在线', '全球服務在線', 'SYSTEMS ONLINE'),
     title: localized('连接世界', '連結世界', 'GLOBAL ACCESS'),
     subtitle: localized('精选商品 · 在线服务', '精選商品 · 線上服務', 'CURATED PRODUCTS · DIGITAL SERVICES'),
@@ -33,6 +38,8 @@ const DEFAULT_TECH_BANNERS = [
   {
     id: 'zx-flow',
     image: '/banners/zx-flow.svg',
+    image_dark: '/banners/zx-flow.svg',
+    image_light: '/banners/zx-flow-light.svg',
     badge: localized('自动化交付', '自動化交付', 'AUTOMATED FULFILLMENT'),
     title: localized('即时交付', '即時交付', 'INSTANT DELIVERY'),
     subtitle: localized('快速 · 清晰 · 稳定', '快速 · 清晰 · 穩定', 'FAST · CLEAR · RELIABLE'),
@@ -45,6 +52,7 @@ export function useBannerCarousel() {
   const router = useRouter()
   const { t } = useI18n()
   const { getLocalizedText } = useLocalized()
+  const { theme } = useTheme()
 
   const banners = ref<any[]>([])
   const bannerLoading = ref(true)
@@ -116,10 +124,16 @@ export function useBannerCarousel() {
     const banner = heroBanner.value
     if (!banner) return ''
     const isMobile = typeof window !== 'undefined' && window.innerWidth < 768
-    if (isMobile && banner.mobile_image) {
-      return getImageUrl(banner.mobile_image)
-    }
-    return getImageUrl(banner.image || banner.mobile_image || '')
+    const themedDesktopImage = theme.value === 'light'
+      ? banner.image_light
+      : banner.image_dark
+    const themedMobileImage = theme.value === 'light'
+      ? banner.mobile_image_light
+      : banner.mobile_image_dark
+    const selectedImage = isMobile
+      ? (themedMobileImage || banner.mobile_image || themedDesktopImage || banner.image)
+      : (themedDesktopImage || banner.image || themedMobileImage || banner.mobile_image)
+    return getImageUrl(selectedImage || '')
   })
 
   const heroBadge = computed(() => {
