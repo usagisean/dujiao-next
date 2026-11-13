@@ -3,7 +3,7 @@ name: Deploy production shop
 on:
   push:
     branches:
-      - custom/v1.4.3
+      - custom/v1.5.2
   workflow_dispatch:
 
 permissions:
@@ -23,7 +23,7 @@ jobs:
       url: https://shop.zxaihub.com
 
     steps:
-      - name: Checkout fixed customization branch
+      - name: Checkout production customization branch
         uses: actions/checkout@v4
         with:
           fetch-depth: 1
@@ -74,7 +74,7 @@ jobs:
         run: |
           set -euo pipefail
           short_sha="${GITHUB_SHA:0:12}"
-          version="v1.4.3+zx.${GITHUB_RUN_NUMBER}.${short_sha}"
+          version="v1.5.2+zx.${GITHUB_RUN_NUMBER}.${short_sha}"
           CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build \
             -trimpath \
             -tags release,fullstack \
