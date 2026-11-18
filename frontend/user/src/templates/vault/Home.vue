@@ -1,11 +1,9 @@
 <template>
   <div>
-    <!-- 站长配置的横幅轮播（两种模式共用，顶部展示） -->
-    <VaultBannerHero />
-
     <!-- ==================== 列表模式 ==================== -->
     <template v-if="isListMode">
       <section class="mx-auto w-full max-w-[1180px] px-4 py-6 sm:px-6">
+        <h1 class="sr-only">{{ t('nav.products') }}</h1>
         <div class="grid items-start gap-5 lg:grid-cols-[248px_1fr] lg:gap-7">
           <VaultCategorySidebar
             :category-groups="categoryGroups"
@@ -79,6 +77,31 @@
 
     <!-- ==================== 卡片模式（默认） ==================== -->
     <template v-else>
+      <!-- 热门商品 -->
+      <section class="mx-auto w-full max-w-[1180px] px-4 py-9 sm:px-6">
+        <div class="mb-[22px] flex flex-wrap items-end justify-between gap-4">
+          <h1 class="text-[28px] font-extrabold">{{ t('home.featured.title') }}</h1>
+          <Button as-child variant="outline" size="sm" class="rounded-full"><RouterLink to="/products">{{ t('home.featured.viewAll') }}</RouterLink></Button>
+        </div>
+
+        <div v-if="productsLoading" class="grid gap-4 grid-cols-[repeat(auto-fill,minmax(228px,1fr))]">
+          <div v-for="i in 10" :key="i" class="h-[280px] rounded-lg border bg-card"></div>
+        </div>
+        <div v-else-if="products.length" class="grid gap-4 grid-cols-[repeat(auto-fill,minmax(228px,1fr))]">
+          <VaultProductCard
+            v-for="(product, idx) in products"
+            :key="product.id"
+            :product="product"
+            :index="idx"
+            @quick-buy="openQuickBuy"
+          />
+        </div>
+        <div v-else class="flex flex-col items-center gap-3 rounded-lg border border-dashed py-14 text-center text-muted-foreground">
+          <PackageOpen class="h-12 w-12 opacity-60" />
+          <p>{{ t('home.featured.empty') }}</p>
+        </div>
+      </section>
+
       <!-- 分类块 -->
       <section v-if="topCategories.length" class="mx-auto w-full max-w-[1180px] px-4 py-9 sm:px-6">
         <div class="mb-[22px] flex flex-wrap items-end justify-between gap-4">
@@ -102,31 +125,6 @@
         </div>
       </section>
 
-      <!-- 热门商品 -->
-      <section class="mx-auto w-full max-w-[1180px] px-4 py-9 sm:px-6">
-        <div class="mb-[22px] flex flex-wrap items-end justify-between gap-4">
-          <h2 class="text-[28px] font-extrabold">{{ t('home.featured.title') }}</h2>
-          <Button as-child variant="outline" size="sm" class="rounded-full"><RouterLink to="/products">{{ t('home.featured.viewAll') }}</RouterLink></Button>
-        </div>
-
-        <div v-if="productsLoading" class="grid gap-4 grid-cols-[repeat(auto-fill,minmax(228px,1fr))]">
-          <div v-for="i in 10" :key="i" class="h-[280px] rounded-lg border bg-card"></div>
-        </div>
-        <div v-else-if="products.length" class="grid gap-4 grid-cols-[repeat(auto-fill,minmax(228px,1fr))]">
-          <VaultProductCard
-            v-for="(product, idx) in products"
-            :key="product.id"
-            :product="product"
-            :index="idx"
-            @quick-buy="openQuickBuy"
-          />
-        </div>
-        <div v-else class="flex flex-col items-center gap-3 rounded-lg border border-dashed py-14 text-center text-muted-foreground">
-          <PackageOpen class="h-12 w-12 opacity-60" />
-          <p>{{ t('home.featured.empty') }}</p>
-        </div>
-      </section>
-
       <!-- 最新动态 -->
       <section v-if="latestVisible && posts.length" class="mx-auto w-full max-w-[1180px] px-4 py-9 sm:px-6">
         <div class="mb-[22px] flex flex-wrap items-end justify-between gap-4">
@@ -147,6 +145,9 @@
         </div>
       </section>
     </template>
+
+    <!-- 页首优先展示商品，横幅保留在商品区之后 -->
+    <VaultBannerHero />
 
     <ProductQuickBuy
       v-if="quickBuyProduct"

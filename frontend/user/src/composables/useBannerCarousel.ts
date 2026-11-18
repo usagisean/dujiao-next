@@ -6,21 +6,13 @@ import { getImageUrl } from '../utils/image'
 import { useTheme } from '../utils/theme'
 import { useLocalized } from './useProduct'
 
-const localized = (simplified: string, traditional: string, english: string) => ({
-  'zh-CN': simplified,
-  'zh-TW': traditional,
-  'en-US': english,
-})
-
 const DEFAULT_TECH_BANNERS = [
   {
     id: 'zx-nexus',
     image: '/banners/zx-nexus.svg',
     image_dark: '/banners/zx-nexus.svg',
     image_light: '/banners/zx-nexus-light.svg',
-    badge: localized('新一代精选平台', '新一代精選平台', 'NEXT-GEN MARKETPLACE'),
-    title: localized('ZX NEXUS', 'ZX NEXUS', 'ZX NEXUS'),
-    subtitle: localized('探索 · 连接 · 体验', '探索 · 連結 · 體驗', 'DISCOVER · CONNECT · EXPERIENCE'),
+    i18nKey: 'home.techHero.nexus',
     link_type: 'internal',
     link_value: '/products',
   },
@@ -29,9 +21,7 @@ const DEFAULT_TECH_BANNERS = [
     image: '/banners/zx-spectrum.svg',
     image_dark: '/banners/zx-spectrum.svg',
     image_light: '/banners/zx-spectrum-light.svg',
-    badge: localized('全球服务在线', '全球服務在線', 'SYSTEMS ONLINE'),
-    title: localized('连接世界', '連結世界', 'GLOBAL ACCESS'),
-    subtitle: localized('精选商品 · 在线服务', '精選商品 · 線上服務', 'CURATED PRODUCTS · DIGITAL SERVICES'),
+    i18nKey: 'home.techHero.spectrum',
     link_type: 'internal',
     link_value: '/products',
   },
@@ -40,9 +30,7 @@ const DEFAULT_TECH_BANNERS = [
     image: '/banners/zx-flow.svg',
     image_dark: '/banners/zx-flow.svg',
     image_light: '/banners/zx-flow-light.svg',
-    badge: localized('自动化交付', '自動化交付', 'AUTOMATED FULFILLMENT'),
-    title: localized('即时交付', '即時交付', 'INSTANT DELIVERY'),
-    subtitle: localized('快速 · 清晰 · 稳定', '快速 · 清晰 · 穩定', 'FAST · CLEAR · RELIABLE'),
+    i18nKey: 'home.techHero.flow',
     link_type: 'internal',
     link_value: '/products',
   },
@@ -136,20 +124,15 @@ export function useBannerCarousel() {
     return getImageUrl(selectedImage || '')
   })
 
-  const heroBadge = computed(() => {
-    if (!heroBanner.value) return t('home.hero.badge')
-    return getLocalizedText(heroBanner.value.badge) || t('home.hero.badge')
-  })
+  const localizedHeroText = (field: 'badge' | 'title' | 'subtitle') => {
+    const banner = heroBanner.value
+    if (banner?.i18nKey) return t(`${banner.i18nKey}.${field}`)
+    return getLocalizedText(banner?.[field]) || t(`home.hero.${field}`)
+  }
 
-  const heroTitle = computed(() => {
-    if (!heroBanner.value) return t('home.hero.title')
-    return getLocalizedText(heroBanner.value.title) || t('home.hero.title')
-  })
-
-  const heroSubtitle = computed(() => {
-    if (!heroBanner.value) return t('home.hero.subtitle')
-    return getLocalizedText(heroBanner.value.subtitle) || t('home.hero.subtitle')
-  })
+  const heroBadge = computed(() => localizedHeroText('badge'))
+  const heroTitle = computed(() => localizedHeroText('title'))
+  const heroSubtitle = computed(() => localizedHeroText('subtitle'))
 
   const heroLink = computed(() => {
     const banner = heroBanner.value
@@ -160,7 +143,7 @@ export function useBannerCarousel() {
   const hasHeroLink = computed(() => heroLink.value.trim().length > 0)
 
   const heroPrimaryButtonText = computed(() => {
-    if (!hasHeroLink.value) return t('home.hero.cta')
+    if (!hasHeroLink.value || heroLink.value === '/products') return t('home.hero.cta')
     const linkType = String(heroBanner.value?.link_type || '').toLowerCase()
     if (linkType === 'external') {
       return t('common.learnMore')

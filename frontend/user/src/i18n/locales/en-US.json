@@ -115,9 +115,21 @@
   },
   "home": {
     "techHero": {
-      "online": "ONLINE",
-      "edge": "GLOBAL EDGE",
-      "explore": "EXPLORE"
+      "nexus": {
+        "badge": "The Store",
+        "title": "ZX NEXUS",
+        "subtitle": "Shop digital products and online services."
+      },
+      "spectrum": {
+        "badge": "The Catalog",
+        "title": "Find What You Need",
+        "subtitle": "Browse the catalog by category."
+      },
+      "flow": {
+        "badge": "Delivery",
+        "title": "Know What to Expect",
+        "subtitle": "Check the delivery method on each product page."
+      }
     },
     "hero": {
       "title": "Good products deserve a simple, reliable buying experience",

@@ -115,9 +115,21 @@
   },
   "home": {
     "techHero": {
-      "online": "在线",
-      "edge": "全球节点",
-      "explore": "探索"
+      "nexus": {
+        "badge": "商城",
+        "title": "ZX NEXUS",
+        "subtitle": "选购数字商品和在线服务。"
+      },
+      "spectrum": {
+        "badge": "商品目录",
+        "title": "找到适合你的商品",
+        "subtitle": "按分类浏览商品。"
+      },
+      "flow": {
+        "badge": "交付说明",
+        "title": "下单前了解交付方式",
+        "subtitle": "各商品的交付方式以详情页为准。"
+      }
     },
     "hero": {
       "title": "好产品，也要有简单可靠的购买体验",

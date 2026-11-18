@@ -115,9 +115,21 @@
   },
   "home": {
     "techHero": {
-      "online": "在線",
-      "edge": "全球節點",
-      "explore": "探索"
+      "nexus": {
+        "badge": "商城",
+        "title": "ZX NEXUS",
+        "subtitle": "選購數位商品與線上服務。"
+      },
+      "spectrum": {
+        "badge": "商品目錄",
+        "title": "找到適合你的商品",
+        "subtitle": "依分類瀏覽商品。"
+      },
+      "flow": {
+        "badge": "交付說明",
+        "title": "下單前了解交付方式",
+        "subtitle": "各商品的交付方式以詳情頁為準。"
+      }
     },
     "hero": {
       "title": "好產品，也要有簡單可靠的購買體驗",
