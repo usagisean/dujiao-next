@@ -6,4 +6,6 @@ import "github.com/gin-gonic/gin"
 func RegisterRoutes(engine gin.IRoutes, handler *Handler) {
 	engine.GET("/sitemap.xml", handler.GetSitemap)
 	engine.GET("/robots.txt", handler.GetRobots)
+	engine.HEAD("/sitemap.xml", handler.GetSitemap)
+	engine.HEAD("/robots.txt", handler.GetRobots)
 }

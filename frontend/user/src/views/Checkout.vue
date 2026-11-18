@@ -4,6 +4,10 @@
       <div class="mb-8">
         <h1 class="mb-2 text-3xl font-black text-foreground">{{ t('checkout.title') }}</h1>
         <p class="text-sm text-muted-foreground">{{ t('checkout.subtitle') }}</p>
+        <div class="mt-5 space-y-2 text-sm text-muted-foreground">
+          <p v-if="bepusdtSelected">{{ t('afterSales.cryptoNotice') }}</p>
+          <RouterLink to="/refund" class="font-medium text-primary underline underline-offset-4">{{ t('afterSales.title') }}</RouterLink>
+        </div>
       </div>
 
       <CheckoutSteps
@@ -159,7 +163,7 @@
             <div v-if="checkoutMode === 'guest'" class="mb-3 rounded-xl border border-success/40 bg-success/10 p-3 text-sm text-success">
               <p class="font-semibold">{{ t('checkout.guestInstructions.title') }}</p>
               <ul class="mt-2 space-y-1 list-disc pl-5">
-                <li>{{ t('checkout.guestInstructions.email') }}</li>
+                <li>{{ t(smtpAvailable ? 'afterSales.emailNotice' : 'afterSales.lookupNotice') }}</li>
                 <li>{{ t('checkout.guestInstructions.password') }}</li>
               </ul>
             </div>
@@ -343,6 +347,7 @@ const {
   requiresOnlineChannel, paymentChannels, selectedChannelId, isChannelDisabledForAmount, channelAmountLimitHint,
   handleSelectChannel, formatChannelFeeRate, formatChannelFixedFee,
   submitting, canSubmit, handleSubmit,
+  smtpAvailable, bepusdtSelected,
 } = useCheckout()
 
 // 这两个引用仅通过模板字符串 ref 绑定（刷新/重置逻辑在 composable 内），

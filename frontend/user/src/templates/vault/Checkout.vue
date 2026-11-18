@@ -11,6 +11,10 @@
     <header class="mb-5 mt-2">
       <h1 class="mb-1.5 text-[32px] font-extrabold">{{ t('checkout.title') }}</h1>
       <p class="text-muted-foreground">{{ t('checkout.subtitle') }}</p>
+      <div class="mt-5 space-y-2 text-sm text-muted-foreground">
+        <p v-if="bepusdtSelected">{{ t('afterSales.cryptoNotice') }}</p>
+        <RouterLink to="/refund" class="font-medium text-primary underline underline-offset-4">{{ t('afterSales.title') }}</RouterLink>
+      </div>
     </header>
 
     <VaultCheckoutSteps current="checkout" :skip-cart="isBuyNowMode" />
@@ -107,7 +111,7 @@
             <div class="mt-3.5 rounded-sm border border-[color:var(--teal-strong)] bg-[color:var(--teal-soft)] px-3.5 py-3 text-[13px] text-[color:var(--teal-strong)]">
               <p class="font-bold">{{ t('checkout.guestInstructions.title') }}</p>
               <ul class="mt-2 grid list-disc gap-0.5 pl-4.5">
-                <li>{{ t('checkout.guestInstructions.email') }}</li>
+                <li>{{ t(smtpAvailable ? 'afterSales.emailNotice' : 'afterSales.lookupNotice') }}</li>
                 <li>{{ t('checkout.guestInstructions.password') }}</li>
               </ul>
             </div>
@@ -228,6 +232,7 @@ const {
   requiresOnlineChannel, paymentChannels, selectedChannelId, isChannelDisabledForAmount, channelAmountLimitHint,
   handleSelectChannel, formatChannelFeeRate, formatChannelFixedFee,
   submitting, canSubmit, handleSubmit,
+  smtpAvailable, bepusdtSelected,
 } = useCheckout()
 
 // 字符串模板 ref，逻辑在 composable 内，显式标记避免 noUnusedLocals 误报。

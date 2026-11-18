@@ -27,6 +27,14 @@ app.use(head)
 app.use(router)
 app.use(i18n)
 
+// The initial HTML has route-specific SEO. Remove those tags on the first SPA
+// navigation so they cannot be inherited by a different route.
+router.afterEach((_to, from, failure) => {
+  if (!failure && from.matched.length) {
+    document.querySelectorAll('[data-zx-page-head]').forEach((tag) => tag.remove())
+  }
+})
+
 // 非默认语言的语言包为懒加载 chunk，挂载前并行加载，避免首屏文案闪现兜底语言
 Promise.all([
   useTelegramMiniAppStore(pinia).init(),

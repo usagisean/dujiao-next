@@ -3,9 +3,11 @@ export interface StoreContact {
   href: string
 }
 
+export const supportEmail = 'support@zxaihub.com'
+
 const DEFAULT_TELEGRAM: StoreContact = {
   label: 'TG',
-  href: 'https://t.me/ultra537',
+  href: 'https://t.me/ultrazzx',
 }
 
 const DEFAULT_WHATSAPP: StoreContact = {

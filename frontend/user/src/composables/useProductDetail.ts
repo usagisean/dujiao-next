@@ -358,14 +358,15 @@ export function useProductDetail(options: { onLoaded?: () => void } = {}) {
   })
 
   const images = computed(() => {
-    if (!product.value?.images) return []
+    if (!product.value) return []
     let imageArray: string[] = []
     if (Array.isArray(product.value.images)) {
       imageArray = product.value.images
-    } else if (product.value.images.images && Array.isArray(product.value.images.images)) {
+    } else if (product.value.images?.images && Array.isArray(product.value.images.images)) {
       imageArray = product.value.images.images
     }
-    return imageArray.map(img => getImageUrl(img))
+    const resolved = imageArray.map(img => getImageUrl(img)).filter(Boolean)
+    return resolved.length ? resolved : ['/product-placeholder.svg']
   })
 
   const skuDisplayText = (sku: any) => {
@@ -654,7 +655,7 @@ export function useProductDetail(options: { onLoaded?: () => void } = {}) {
 
       return [{
         type: 'application/ld+json',
-        innerHTML: JSON.stringify(jsonLd),
+        innerHTML: JSON.stringify(jsonLd).replace(/</g, '\\u003c'),
       }]
     },
   })

@@ -77,6 +77,8 @@
         </div>
         <div class="flex flex-col items-center gap-2 md:items-end">
           <div class="flex flex-wrap items-center gap-x-4 gap-y-1 justify-center md:justify-end">
+            <router-link to="/guest/orders" class="hover:text-foreground">{{ t('navbar.guestOrders') }}</router-link>
+            <router-link to="/refund" class="hover:text-foreground">{{ t('afterSales.title') }}</router-link>
             <router-link to="/privacy" class="hover:text-gray-900 dark:hover:text-gray-400">{{ t('footer.privacy') || 'Privacy Policy' }}</router-link>
             <router-link to="/terms" class="hover:text-gray-900 dark:hover:text-gray-400">{{ t('footer.terms') || 'Terms of Service' }}</router-link>
           </div>

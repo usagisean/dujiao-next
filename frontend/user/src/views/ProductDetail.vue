@@ -245,7 +245,7 @@
                   </p>
                 </div>
 
-                <div class="mb-8">
+                <div v-if="getLocalizedText(product.description)" class="mb-8">
                   <h2 class="mb-3 text-sm font-bold uppercase tracking-widest text-muted-foreground">
                     {{ t('productDetail.description') }}
                   </h2>

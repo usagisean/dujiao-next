@@ -1133,6 +1133,10 @@ export function useCheckout() {
     isResellerTenant,
     // mode select / guest
     checkoutMode,
+    smtpAvailable: computed(() => appStore.config?.smtp_enabled === true),
+    bepusdtSelected: computed(() => paymentChannels.value.some((channel) =>
+      channel.id === selectedChannelId.value && channel.provider_type === 'bepusdt',
+    )),
     guestEmail,
     guestPassword,
     guestEmailValid,

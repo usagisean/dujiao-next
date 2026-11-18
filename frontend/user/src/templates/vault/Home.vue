@@ -78,7 +78,7 @@
     <!-- ==================== 卡片模式（默认） ==================== -->
     <template v-else>
       <!-- 热门商品 -->
-      <section class="mx-auto w-full max-w-[1180px] px-4 py-9 sm:px-6">
+      <section v-if="productsLoading || products.length" class="mx-auto w-full max-w-[1180px] px-4 py-9 sm:px-6">
         <div class="mb-[22px] flex flex-wrap items-end justify-between gap-4">
           <h1 class="text-[28px] font-extrabold">{{ t('home.featured.title') }}</h1>
           <Button as-child variant="outline" size="sm" class="rounded-full"><RouterLink to="/products">{{ t('home.featured.viewAll') }}</RouterLink></Button>
@@ -95,10 +95,6 @@
             :index="idx"
             @quick-buy="openQuickBuy"
           />
-        </div>
-        <div v-else class="flex flex-col items-center gap-3 rounded-lg border border-dashed py-14 text-center text-muted-foreground">
-          <PackageOpen class="h-12 w-12 opacity-60" />
-          <p>{{ t('home.featured.empty') }}</p>
         </div>
       </section>
 

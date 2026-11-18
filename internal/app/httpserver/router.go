@@ -22,6 +22,8 @@ import (
 	orderwiring "github.com/dujiao-next/internal/bootstrap/order"
 	paymentwiring "github.com/dujiao-next/internal/bootstrap/payment"
 	publicconfigwiring "github.com/dujiao-next/internal/bootstrap/publicconfig"
+	"github.com/dujiao-next/internal/bootstrap/storefrontmeta"
+
 	resellerbootstrap "github.com/dujiao-next/internal/bootstrap/reseller"
 	upstreamwiring "github.com/dujiao-next/internal/bootstrap/upstreamapi"
 	userauthwiring "github.com/dujiao-next/internal/bootstrap/userauth"
@@ -289,7 +291,7 @@ func SetupRouter(cfg *config.Config, c *container.Container) *gin.Engine {
 		if err := web.RegisterAdmin(r, cfg.Web.AdminPath, web.AdminFS()); err != nil {
 			log.Sugar().Fatalf("注册 admin SPA 失败: %v", err)
 		}
-		if err := web.RegisterUser(r, web.UserFS()); err != nil {
+		if err := web.RegisterUser(r, web.UserFS(), storefrontmeta.New(c)); err != nil {
 			log.Sugar().Fatalf("注册 user SPA 失败: %v", err)
 		}
 	}

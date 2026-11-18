@@ -221,7 +221,7 @@ func newUserFS() fstest.MapFS {
 func TestRegisterUser_ServesIndex(t *testing.T) {
 	gin.SetMode(gin.TestMode)
 	r := gin.New()
-	if err := RegisterUser(r, newUserFS()); err != nil {
+	if err := RegisterUser(r, newUserFS(), nil); err != nil {
 		t.Fatalf("RegisterUser: %v", err)
 	}
 
@@ -241,7 +241,7 @@ func TestRegisterUser_ServesIndex(t *testing.T) {
 func TestRegisterUser_ServesAsset(t *testing.T) {
 	gin.SetMode(gin.TestMode)
 	r := gin.New()
-	if err := RegisterUser(r, newUserFS()); err != nil {
+	if err := RegisterUser(r, newUserFS(), nil); err != nil {
 		t.Fatalf("RegisterUser: %v", err)
 	}
 
@@ -261,7 +261,7 @@ func TestRegisterUser_ServesAsset(t *testing.T) {
 func TestRegisterUser_HistoryFallback(t *testing.T) {
 	gin.SetMode(gin.TestMode)
 	r := gin.New()
-	if err := RegisterUser(r, newUserFS()); err != nil {
+	if err := RegisterUser(r, newUserFS(), nil); err != nil {
 		t.Fatalf("RegisterUser: %v", err)
 	}
 
@@ -283,7 +283,7 @@ func TestRegisterUser_HistoryFallback(t *testing.T) {
 func TestRegisterUser_ReservedPathsStay404(t *testing.T) {
 	gin.SetMode(gin.TestMode)
 	r := gin.New()
-	if err := RegisterUser(r, newUserFS()); err != nil {
+	if err := RegisterUser(r, newUserFS(), nil); err != nil {
 		t.Fatalf("RegisterUser: %v", err)
 	}
 
@@ -308,12 +308,12 @@ func TestRegisterUser_ReservedPathsStay404(t *testing.T) {
 	}
 }
 
-// TestRegisterUser_NonReservedLookalikeStillServesSPA 确认保留前缀判断是按路径段
+// TestRegisterUser_UnknownPathsRenderSPAWith404 确认保留前缀判断是按路径段
 // 匹配的，不会误伤 /apiary 这类只是恰好同前缀的前端路由。
-func TestRegisterUser_NonReservedLookalikeStillServesSPA(t *testing.T) {
+func TestRegisterUser_UnknownPathsRenderSPAWith404(t *testing.T) {
 	gin.SetMode(gin.TestMode)
 	r := gin.New()
-	if err := RegisterUser(r, newUserFS()); err != nil {
+	if err := RegisterUser(r, newUserFS(), nil); err != nil {
 		t.Fatalf("RegisterUser: %v", err)
 	}
 
@@ -323,8 +323,8 @@ func TestRegisterUser_NonReservedLookalikeStillServesSPA(t *testing.T) {
 			w := httptest.NewRecorder()
 			r.ServeHTTP(w, req)
 
-			if w.Code != http.StatusOK {
-				t.Fatalf("status = %d, want 200", w.Code)
+			if w.Code != http.StatusNotFound {
+				t.Fatalf("status = %d, want 404", w.Code)
 			}
 			if !strings.Contains(w.Body.String(), "user-spa") {
 				t.Fatalf("expected SPA fallback, got: %s", w.Body.String())
@@ -339,7 +339,7 @@ func TestRegisterUser_DoesNotShadowExistingRoutes(t *testing.T) {
 	r.GET("/api/v1/ping", func(c *gin.Context) {
 		c.String(http.StatusOK, "pong")
 	})
-	if err := RegisterUser(r, newUserFS()); err != nil {
+	if err := RegisterUser(r, newUserFS(), nil); err != nil {
 		t.Fatalf("RegisterUser: %v", err)
 	}
 
@@ -378,7 +378,7 @@ func TestCacheControlHeaders(t *testing.T) {
 	if err := RegisterAdmin(r, "/admin", newAdminFS("<html>admin-spa</html>")); err != nil {
 		t.Fatalf("RegisterAdmin: %v", err)
 	}
-	if err := RegisterUser(r, newUserFS()); err != nil {
+	if err := RegisterUser(r, newUserFS(), nil); err != nil {
 		t.Fatalf("RegisterUser: %v", err)
 	}
 
@@ -393,6 +393,72 @@ func TestCacheControlHeaders(t *testing.T) {
 			}
 			if got := w.Header().Get("Cache-Control"); got != tc.want {
 				t.Fatalf("Cache-Control = %q, want %q", got, tc.want)
+			}
+		})
+	}
+}
+
+func TestRegisterUser_StorefrontStatusAndMetadata(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	r := gin.New()
+	fsys := newUserFS()
+	fsys["index.html"].Data = []byte("<html><head><title>ZX NEXUS</title></head><body>user-spa</body></html>")
+	meta := func(_ *http.Request, route, slug string) PageMetadata {
+		if slug == "unlisted" {
+			return PageMetadata{Missing: true}
+		}
+		return PageMetadata{
+			Title:       "ZX & <Shop>",
+			Description: "Plain description",
+			Canonical:   StorefrontURL("https://shop.example", route),
+			Image:       "https://shop.example/zx-logo.png",
+			SiteName:    "</script><script>",
+			Home:        route == "/",
+		}
+	}
+	if err := RegisterUser(r, fsys, meta); err != nil {
+		t.Fatal(err)
+	}
+	for _, tc := range []struct {
+		method, url string
+		status      int
+	}{
+		{http.MethodGet, "/?utm=test", http.StatusOK},
+		{http.MethodGet, "/refund", http.StatusOK},
+		{http.MethodGet, "/guest/orders/DJ001", http.StatusOK},
+		{http.MethodGet, "/pay", http.StatusOK},
+		{http.MethodGet, "/products/unlisted", http.StatusNotFound},
+		{http.MethodGet, "/missing", http.StatusNotFound},
+		{http.MethodHead, "/missing", http.StatusNotFound},
+		{http.MethodHead, "/refund", http.StatusOK},
+	} {
+		t.Run(tc.method+" "+tc.url, func(t *testing.T) {
+			w := httptest.NewRecorder()
+			r.ServeHTTP(w, httptest.NewRequest(tc.method, tc.url, nil))
+			if w.Code != tc.status {
+				t.Fatalf("status = %d, want %d", w.Code, tc.status)
+			}
+			body := w.Body.String()
+			if tc.method == http.MethodHead && body != "" {
+				t.Errorf("HEAD unexpectedly wrote a body: %s", body)
+			}
+			if tc.status == http.StatusNotFound && w.Header().Get("X-Robots-Tag") != "noindex" {
+				t.Error("missing pages must not be indexed")
+			}
+			if tc.url == "/?utm=test" {
+				for _, needle := range []string{
+					"<title>ZX &amp; &lt;Shop&gt;</title>",
+					"href=\"https://shop.example/\"",
+					"application/ld+json",
+					"\"@type\":\"Organization\"",
+				} {
+					if !strings.Contains(body, needle) {
+						t.Errorf("missing %q in %s", needle, body)
+					}
+				}
+				if strings.Contains(body, "utm=test") || strings.Contains(body, "</script><script>") {
+					t.Error("page reflected tracking params or unsafe markup")
+				}
 			}
 		})
 	}

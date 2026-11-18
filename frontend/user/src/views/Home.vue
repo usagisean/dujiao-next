@@ -167,7 +167,7 @@
 
     <!-- ==================== CARD MODE (default) ==================== -->
     <template v-else>
-    <section id="featured" :aria-busy="productsLoading" class="relative z-10 pb-4 pt-20 md:pb-6 md:pt-28">
+    <section v-if="productsLoading || products.length" id="featured" :aria-busy="productsLoading" class="relative z-10 pb-4 pt-20 md:pb-6 md:pt-28">
       <div class="container mx-auto px-4">
         <div class="mb-4 flex flex-wrap items-center justify-between gap-x-4 gap-y-2 md:mb-6">
           <h1 class="theme-section-heading text-xl sm:text-2xl md:text-3xl">{{ t('home.featured.title') }}</h1>
@@ -200,17 +200,10 @@
             @quick-buy="openQuickBuy"
           />
         </div>
-        <div v-else class="zx-empty-state rounded-[1.5rem] border border-dashed px-6 py-14 text-center text-muted-foreground theme-slide-up md:py-16">
-          <span class="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-primary/10 text-primary">
-            <PackageOpen class="h-8 w-8" :stroke-width="1.5" />
-          </span>
-          <h2 class="mt-5 text-base font-semibold text-foreground">{{ t('home.featured.emptyTitle') }}</h2>
-          <p class="mx-auto mt-2 max-w-md text-sm leading-6">{{ t('home.featured.emptyDescription') }}</p>
-        </div>
       </div>
     </section>
 
-    <section v-if="!bannerLoading && showHeroSection" class="zx-home-hero relative z-10 py-5 md:py-8">
+    <section v-if="!bannerLoading && showHeroSection" class="zx-home-hero relative z-10 py-5 md:py-8" :class="{ '!pt-20 md:!pt-28': !productsLoading && !products.length }">
       <div class="container mx-auto px-4">
         <div class="zx-hero-shell relative overflow-hidden rounded-2xl border"
           @touchstart="onBannerTouchStart"
@@ -357,7 +350,6 @@ import {
   ArrowRight,
   ChevronLeft,
   ChevronRight,
-  PackageOpen,
   Search,
   X,
 } from 'lucide-vue-next'

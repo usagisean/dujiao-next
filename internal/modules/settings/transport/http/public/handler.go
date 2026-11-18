@@ -133,7 +133,7 @@ func (h *Handler) GetConfig(c *gin.Context) {
 		"brand": map[string]interface{}{
 			"site_name": "ZX NEXUS",
 			"site_url":  "https://shop.zxaihub.com",
-			"site_icon": "/zx-logo.png",
+			"site_icon": "/favicon.ico",
 			"site_logo": "/zx-logo.png",
 			"site_description": map[string]interface{}{
 				"zh-CN": "精选商品与在线服务平台，以清晰的流程提供便捷、可靠的购买体验。",
@@ -142,7 +142,7 @@ func (h *Handler) GetConfig(c *gin.Context) {
 			},
 		},
 		"contact": map[string]interface{}{
-			"telegram": "https://t.me/ultra537",
+			"telegram": "https://t.me/ultrazzx",
 		},
 		"about": map[string]interface{}{
 			"hero": map[string]interface{}{

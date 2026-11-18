@@ -1787,5 +1787,17 @@
     "authInvalid": "Credentials mismatch, please try again",
     "authSubmit": "Save and search",
     "authClear": "Clear saved info"
+  },
+  "afterSales": {
+    "title": "Support & Refunds",
+    "intro": "Contact us if a payment is not reflected, an order was charged twice, or the item is missing or not as described.",
+    "checkoutTitle": "Check your order",
+    "checkoutText": "Use the order page to check delivery and payment status. For a guest order, use the email and password you entered at checkout.",
+    "requestTitle": "Request a review",
+    "requestText": "Send support the order number, a short explanation, and, for a crypto payment, the transaction hash if available. We will verify the order and explain the available options.",
+    "privacyHint": "Never share your order password, verification codes, or wallet recovery phrase.",
+    "emailNotice": "Use a working email for your order. If email notifications are enabled for this order, we may send updates there.",
+    "lookupNotice": "Save your email and order password. You can check payment and delivery in Guest Order Lookup.",
+    "cryptoNotice": "The USDT amount, network, and address are shown in the payment gateway. Send exactly the amount shown on that network. If you already paid a different amount, contact support before paying again."
   }
 }

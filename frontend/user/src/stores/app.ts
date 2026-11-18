@@ -18,7 +18,7 @@ export const useAppStore = defineStore('app', () => {
     const serverTimeOffset = ref(0)
     const siteIconHref = computed(() => {
         const siteIcon = String(config.value?.brand?.site_icon || '').trim()
-        return siteIcon && siteIcon !== '/dj.svg' ? getImageUrl(siteIcon) : '/zx-logo.png'
+        return siteIcon && siteIcon !== '/dj.svg' ? getImageUrl(siteIcon) : '/favicon.ico'
     })
     const isResellerTenant = computed(() => {
         return String(config.value?.tenant?.mode || '').trim().toLowerCase() === 'reseller'
@@ -44,7 +44,7 @@ export const useAppStore = defineStore('app', () => {
             if (localized) return String(localized).trim() || undefined
             return resolveBrandName(config.value?.brand?.site_name)
         },
-        link: () => [{ key: 'favicon', rel: 'icon', href: siteIconHref.value }],
+        link: () => [{ rel: 'icon', sizes: 'any', href: siteIconHref.value }],
         meta: () => {
             const seo = config.value?.seo
             if (!seo) return []

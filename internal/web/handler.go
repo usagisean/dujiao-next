@@ -109,6 +109,9 @@ func serveAsset(c *gin.Context, fileServer http.Handler, fp string) {
 	} else {
 		c.Header("Cache-Control", indexCacheControl)
 	}
+	if fp == "site.webmanifest" {
+		c.Header("Content-Type", "application/manifest+json")
+	}
 	fileServer.ServeHTTP(c.Writer, c.Request)
 }
 
@@ -160,7 +163,7 @@ func RegisterAdmin(r *gin.Engine, prefix string, fsys fs.FS) error {
 //
 // 由于 NoRoute 在所有显式路由（API、uploads、health、admin）之后才匹配，
 // 这里不需要做路径前缀剥离；命中真实文件返回文件，否则 fallback 到 index.html。
-func RegisterUser(r *gin.Engine, fsys fs.FS) error {
+func RegisterUser(r *gin.Engine, fsys fs.FS, resolve UserPageResolver) error {
 	if r == nil {
 		return errors.New("nil gin engine")
 	}
@@ -184,16 +187,42 @@ func RegisterUser(r *gin.Engine, fsys fs.FS) error {
 			return
 		}
 
-		fp := strings.TrimPrefix(c.Request.URL.Path, "/")
-		if fp == "" || fp == "index.html" {
-			serveIndex(c, indexCached)
+		if c.Request.Method != http.MethodGet && c.Request.Method != http.MethodHead {
+			c.String(http.StatusNotFound, "404 page not found")
 			return
 		}
-		if hasFile(fsys, fp) {
+		fp := strings.TrimPrefix(c.Request.URL.Path, "/")
+		if fp != "index.html" && hasFile(fsys, fp) {
 			serveAsset(c, fileServer, fp)
 			return
 		}
-		serveIndex(c, indexCached)
+		route, slug := userRoute(c.Request.URL.Path)
+		status := http.StatusOK
+		if route == "" {
+			status = http.StatusNotFound
+		}
+		var metadata PageMetadata
+		if resolve != nil && status == http.StatusOK {
+			metadata = resolve(c.Request, route, slug)
+			if metadata.Missing {
+				status = http.StatusNotFound
+			}
+		}
+		body := indexCached
+		if status == http.StatusNotFound || metadata.NoIndex {
+			c.Header("X-Robots-Tag", "noindex")
+		}
+		if metadata.Title != "" && status == http.StatusOK {
+			body = renderPageHead(indexCached, metadata)
+		}
+		c.Header("Cache-Control", indexCacheControl)
+		c.Header("Content-Type", "text/html; charset=utf-8")
+		if c.Request.Method == http.MethodHead {
+			c.Status(status)
+			c.Writer.WriteHeaderNow()
+			return
+		}
+		c.Data(status, "text/html; charset=utf-8", body)
 	})
 	return nil
 }

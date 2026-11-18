@@ -37,7 +37,7 @@ func NewService(
 
 const (
 	sitemapCacheTTL    = 5 * time.Minute
-	sitemapCachePrefix = "sitemap:xml:"
+	sitemapCachePrefix = "sitemap:xml:v2:"
 	sitemapMaxFetch    = 50000 // 单次拉取上限，避免极端数据量打爆内存
 )
 
@@ -120,11 +120,10 @@ func (s *Service) collectURLs(ctx context.Context, baseURL string) ([]domain.URL
 	}{
 		{"/", "daily", "1.0"},
 		{"/products", "daily", "0.9"},
-		{"/blog", "weekly", "0.6"},
-		{"/notice", "weekly", "0.5"},
 		{"/about", "monthly", "0.3"},
 		{"/terms", "yearly", "0.2"},
 		{"/privacy", "yearly", "0.2"},
+		{"/refund", "monthly", "0.3"},
 	}
 	for _, p := range staticPages {
 		entries = append(entries, domain.URL{
@@ -168,7 +167,15 @@ func (s *Service) collectURLs(ctx context.Context, baseURL string) ([]domain.URL
 	if err != nil {
 		return nil, fmt.Errorf("sitemap: list posts: %w", err)
 	}
+	seenLists := make(map[string]bool, 2)
 	for _, post := range posts {
+		list := map[string]string{"blog": "/blog", "notice": "/notice"}[post.Type]
+		if list != "" && !seenLists[list] {
+			entries = append(entries, domain.URL{
+				Location: baseURL + list, ChangeFrequency: "weekly", Priority: "0.6",
+			})
+			seenLists[list] = true
+		}
 		lastmod := post.CreatedAt
 		if post.PublishedAt != nil {
 			lastmod = *post.PublishedAt

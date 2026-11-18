@@ -297,6 +297,11 @@ const router = createRouter({
             props: { type: 'privacy' }
         },
         {
+            path: '/refund',
+            name: 'refund',
+            component: () => import('../views/Refund.vue'),
+        },
+        {
             path: '/auth/login',
             name: 'user-login',
             component: templateView('auth/Login', loginViewLoader),

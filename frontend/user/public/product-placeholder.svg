@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 620" role="img" aria-label="ZX NEXUS">
+  <defs>
+    <radialGradient id="glow">
+      <stop stop-color="#512616"/>
+      <stop offset="1" stop-color="#171314"/>
+    </radialGradient>
+  </defs>
+  <path fill="url(#glow)" d="M0 0h800v620H0z"/>
+  <g fill="none" stroke="#f97316" opacity=".28">
+    <circle cx="400" cy="280" r="126"/>
+    <circle cx="400" cy="280" r="165"/>
+    <path d="M0 280h230m340 0h230M400 0v111m0 337v172"/>
+  </g>
+  <text x="400" y="310" text-anchor="middle" fill="#ffd4b7" font-family="sans-serif" font-weight="700" font-size="90" letter-spacing="2">ZX</text>
+  <text x="400" y="497" text-anchor="middle" fill="#e0a489" font-family="sans-serif" font-size="20" letter-spacing="8">ZX NEXUS</text>
+</svg>
