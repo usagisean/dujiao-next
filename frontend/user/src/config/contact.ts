@@ -5,8 +5,10 @@ export interface StoreContact {
 
 export const supportEmail = 'support@zxaihub.com'
 
+const TELEGRAM_LABEL = 'Telegram'
+
 const DEFAULT_TELEGRAM: StoreContact = {
-  label: 'TG',
+  label: TELEGRAM_LABEL,
   href: 'https://t.me/ultrazzx',
 }
 
@@ -28,12 +30,12 @@ function resolveTelegram(value: unknown): StoreContact {
   if (!raw || isUpstreamPlaceholder(raw)) return DEFAULT_TELEGRAM
   if (raw.startsWith('@')) {
     const username = raw.slice(1)
-    return { label: 'TG', href: `https://t.me/${username}` }
+    return { label: TELEGRAM_LABEL, href: `https://t.me/${username}` }
   }
   if (/^https?:\/\//i.test(raw)) {
-    return { label: 'TG', href: raw }
+    return { label: TELEGRAM_LABEL, href: raw }
   }
-  return { label: 'TG', href: '' }
+  return { label: TELEGRAM_LABEL, href: '' }
 }
 
 export function resolveStoreContacts(contactConfig: unknown) {

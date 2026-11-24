@@ -260,13 +260,13 @@
                   <ArrowRight class="h-4 w-4" />
                 </button>
                 <a
-                  v-if="tgHref"
-                  :href="tgHref"
+                  v-if="telegram.href"
+                  :href="telegram.href"
                   target="_blank"
                   rel="noopener noreferrer"
                   class="zx-hero-secondary inline-flex min-h-11 items-center rounded-xl border px-4 py-2 text-sm font-semibold backdrop-blur transition"
                 >
-                  TG
+                  {{ telegram.label }}
                 </a>
               </div>
             </div>
@@ -376,7 +376,7 @@ const router = useRouter()
 const { t } = useI18n()
 const { getLocalizedText } = useLocalized()
 const appStore = useAppStore()
-const tgHref = computed(() => resolveStoreContacts(appStore.config?.contact).telegram.href)
+const telegram = computed(() => resolveStoreContacts(appStore.config?.contact).telegram)
 
 const heroBadgeClass = 'zx-hero-badge inline-flex items-center gap-2 rounded-md border px-2.5 py-0.5 text-xs font-semibold uppercase tracking-wider backdrop-blur-sm'
 
