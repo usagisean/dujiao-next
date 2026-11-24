@@ -9,22 +9,22 @@ import (
 // Reader 将 Catalog 的仓储契约收窄为 Sitemap 投影。
 type Reader struct {
 	products   productcontract.Repository
-	categories categorycontract.Repository
+	categories categorycontract.ListedProductCategoryReader
 }
 
 var _ contract.CatalogReader = (*Reader)(nil)
 
 // New 创建 Catalog 读取适配器。
-func New(products productcontract.Repository, categories categorycontract.Repository) *Reader {
+func New(products productcontract.Repository, categories categorycontract.ListedProductCategoryReader) *Reader {
 	if products == nil || categories == nil {
 		panic("sitemap catalog reader: required repository is nil")
 	}
 	return &Reader{products: products, categories: categories}
 }
 
-// ListActiveCategories 返回可索引分类投影。
-func (r *Reader) ListActiveCategories() ([]contract.Category, error) {
-	rows, err := r.categories.ListActive()
+// ListCategoriesWithListedProducts 返回可索引分类投影。
+func (r *Reader) ListCategoriesWithListedProducts() ([]contract.Category, error) {
+	rows, err := r.categories.ListActiveWithListedProducts()
 	if err != nil {
 		return nil, err
 	}

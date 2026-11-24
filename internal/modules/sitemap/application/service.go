@@ -37,7 +37,7 @@ func NewService(
 
 const (
 	sitemapCacheTTL    = 5 * time.Minute
-	sitemapCachePrefix = "sitemap:xml:v2:"
+	sitemapCachePrefix = "sitemap:xml:v3:"
 	sitemapMaxFetch    = 50000 // 单次拉取上限，避免极端数据量打爆内存
 )
 
@@ -134,8 +134,8 @@ func (s *Service) collectURLs(ctx context.Context, baseURL string) ([]domain.URL
 		})
 	}
 
-	// 2. 启用的分类
-	categories, err := s.catalog.ListActiveCategories()
+	// 2. 能展示上架商品的启用分类
+	categories, err := s.catalog.ListCategoriesWithListedProducts()
 	if err != nil {
 		return nil, fmt.Errorf("sitemap: list categories: %w", err)
 	}

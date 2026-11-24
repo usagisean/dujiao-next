@@ -265,3 +265,64 @@ func TestSitemapServiceGenerateRejectsEmptyBaseURL(t *testing.T) {
 		t.Fatalf("expected error for empty base url")
 	}
 }
+
+func TestSitemapCategoriesFollowPublishedProductVisibility(t *testing.T) {
+	svc, db := newSitemapServiceForTest(t, nil)
+	makeCategory := func(slug string, parentID uint) categorydomain.Category {
+		t.Helper()
+		c := categorydomain.Category{Slug: slug, NameJSON: jsonmap.JSON{"zh-CN": slug}, IsActive: true, ParentID: parentID}
+		if err := db.Create(&c).Error; err != nil {
+			t.Fatal(err)
+		}
+		return c
+	}
+	makeProduct := func(slug string, cat categorydomain.Category, active bool) productdomain.Product {
+		t.Helper()
+		p := productdomain.Product{Slug: slug, CategoryID: cat.ID, TitleJSON: jsonmap.JSON{"zh-CN": slug}, IsActive: active}
+		if err := db.Create(&p).Error; err != nil {
+			t.Fatal(err)
+		}
+		return p
+	}
+	root := makeCategory("root", 0)
+	leaf := makeCategory("leaf", root.ID)
+	p := makeProduct("listed-in-leaf", leaf, true)
+	makeCategory("empty", 0)
+	makeProduct("only-draft-product", makeCategory("draft-only", 0), false)
+	deleted := makeProduct("deleted-product", makeCategory("with-deleted", 0), true)
+	if err := db.Model(&deleted).Update("deleted_at", time.Now()).Error; err != nil {
+		t.Fatal(err)
+	}
+	hiddenRoot := makeCategory("disabled-child-root", 0)
+	hiddenChild := makeCategory("disabled-child", hiddenRoot.ID)
+	makeProduct("disabled-child-product", hiddenChild, true)
+	if err := db.Model(&hiddenChild).Update("is_active", false).Error; err != nil {
+		t.Fatal(err)
+	}
+
+	assertCategory := func(doc, slug string, want bool) {
+		t.Helper()
+		if got := strings.Contains(doc, "/categories/"+slug+"</loc>"); got != want {
+			t.Errorf("category %s included: %t, want %t", slug, got, want)
+		}
+	}
+	doc, err := svc.Generate(context.Background(), "https://example.com")
+	if err != nil {
+		t.Fatal(err)
+	}
+	assertCategory(doc, "root", true)
+	assertCategory(doc, "leaf", true)
+	for _, slug := range []string{"empty", "draft-only", "with-deleted", "disabled-child", "disabled-child-root"} {
+		assertCategory(doc, slug, false)
+	}
+
+	if err := db.Model(&p).Update("is_active", false).Error; err != nil {
+		t.Fatal(err)
+	}
+	doc, err = svc.Generate(context.Background(), "https://example.com")
+	if err != nil {
+		t.Fatal(err)
+	}
+	assertCategory(doc, "root", false)
+	assertCategory(doc, "leaf", false)
+}

@@ -27,7 +27,7 @@ type PublishedPost struct {
 
 // CatalogReader 提供 Sitemap 所需的可索引商品和分类。
 type CatalogReader interface {
-	ListActiveCategories() ([]Category, error)
+	ListCategoriesWithListedProducts() ([]Category, error)
 	ListActiveProducts(limit int) ([]Product, error)
 }
 

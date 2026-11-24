@@ -43,6 +43,26 @@ func (r *CategoryStore) ListActive() ([]categorydomain.Category, error) {
 	return categories, nil
 }
 
+// ListActiveWithListedProducts limits sitemap categories to pages that show
+// listed products. Like the storefront, root categories also show products
+// from active immediate children.
+func (r *CategoryStore) ListActiveWithListedProducts() ([]categorydomain.Category, error) {
+	var categories []categorydomain.Category
+	err := r.db.
+		Where("categories.deleted_at IS NULL AND categories.is_active = ?", true).
+		Where(`EXISTS (
+			SELECT 1 FROM products p
+			WHERE p.deleted_at IS NULL AND p.is_active = ? AND p.category_id = categories.id
+		) OR (categories.parent_id = 0 AND EXISTS (
+			SELECT 1 FROM categories child JOIN products p ON p.category_id = child.id
+			WHERE child.parent_id = categories.id AND child.deleted_at IS NULL AND child.is_active = ?
+				AND p.deleted_at IS NULL AND p.is_active = ?
+		))`, true, true, true).
+		Order("categories.sort_order DESC, categories.id ASC").
+		Find(&categories).Error
+	return categories, err
+}
+
 // GetByID 根据 ID 获取分类
 func (r *CategoryStore) GetByID(id string) (*categorydomain.Category, error) {
 	pk, err := strconv.ParseUint(id, 10, 64)

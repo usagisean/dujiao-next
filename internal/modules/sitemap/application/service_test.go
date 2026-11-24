@@ -13,7 +13,7 @@ type catalogStub struct {
 	calls int
 }
 
-func (c *catalogStub) ListActiveCategories() ([]contract.Category, error) {
+func (c *catalogStub) ListCategoriesWithListedProducts() ([]contract.Category, error) {
 	c.calls++
 	return nil, nil
 }
@@ -84,7 +84,7 @@ func TestGenerateCachesRenderedDocument(t *testing.T) {
 	if err != nil {
 		t.Fatalf("generate failed: %v", err)
 	}
-	if cache.setKey != "sitemap:xml:v2:https://example.com" {
+	if cache.setKey != "sitemap:xml:v3:https://example.com" {
 		t.Fatalf("cache key got %q", cache.setKey)
 	}
 	if cache.setValue != document || cache.setValue == "" {

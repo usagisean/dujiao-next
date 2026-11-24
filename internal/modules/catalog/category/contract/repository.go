@@ -19,3 +19,8 @@ type Repository interface {
 	GetBySlugUnscoped(slug string) (*categorydomain.Category, error)
 	Restore(category *categorydomain.Category) error
 }
+
+// ListedProductCategoryReader identifies public category pages with a listed product.
+type ListedProductCategoryReader interface {
+	ListActiveWithListedProducts() ([]categorydomain.Category, error)
+}

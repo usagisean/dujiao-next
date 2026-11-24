@@ -16,7 +16,7 @@ import (
 	cartapp "github.com/dujiao-next/internal/modules/cart/application"
 	cartgormstore "github.com/dujiao-next/internal/modules/cart/infrastructure/gormstore"
 	categoryapp "github.com/dujiao-next/internal/modules/catalog/category/application"
-	categorycontract "github.com/dujiao-next/internal/modules/catalog/category/contract"
+	categorygormstore "github.com/dujiao-next/internal/modules/catalog/category/infrastructure/gormstore"
 	mappingapp "github.com/dujiao-next/internal/modules/catalog/mapping/application"
 	mappinggormstore "github.com/dujiao-next/internal/modules/catalog/mapping/infrastructure/gormstore"
 	productapplication "github.com/dujiao-next/internal/modules/catalog/product/application"
@@ -107,7 +107,7 @@ type Container struct {
 	CouponUsageRepo        *coupongormstore.UsageStore
 	PromotionRepo          *promotiongormstore.Store
 	WalletRepo             *walletgormstore.Store
-	CategoryRepo           categorycontract.Repository
+	CategoryRepo           *categorygormstore.CategoryStore
 	SettingRepo            settingscontract.Store
 	UserLoginLogRepo       auditlogcontract.UserLoginRepository
 	AuthzAuditLogRepo      auditlogcontract.AuthzRepository
