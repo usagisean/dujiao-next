@@ -38,14 +38,14 @@ func New(c *container.Container) web.UserPageResolver {
 		}
 		base := origin.Scheme + "://" + origin.Host
 		name := firstText(settingText(brand["site_name"]), "ZX NEXUS")
-		description := firstText(englishText(seo["description"]), englishText(brand["site_description"]),
-			"Browse digital products, track orders, and get help from ZX NEXUS.")
+		description := firstText(defaultLocaleText(seo["description"]), defaultLocaleText(brand["site_description"]),
+			"浏览数字商品，查询订单，或联系 ZX NEXUS 客服。")
 		meta := web.PageMetadata{SiteName: name, Description: description,
 			Image: base + "/zx-logo.png", Home: route == "/"}
 		title := map[string]string{
-			"/products": "Products", "/blog": "Blog", "/notice": "Announcements",
-			"/about": "About", "/terms": "Terms of Service", "/privacy": "Privacy Policy",
-			"/refund": "Support & Refunds",
+			"/products": "商品中心", "/blog": "博客", "/notice": "公告",
+			"/about": "关于我们", "/terms": "服务条款", "/privacy": "隐私政策",
+			"/refund": "售后与退款",
 		}[route]
 		canonicalPath := route
 		switch route {
@@ -55,11 +55,11 @@ func New(c *container.Container) web.UserPageResolver {
 				return web.PageMetadata{Missing: errors.Is(err, productcontract.ErrNotFound)}
 			}
 			canonicalPath = "/products/" + product.Slug
-			title = firstText(englishText(product.TitleJSON), "Product")
+			title = firstText(defaultLocaleText(product.TitleJSON), "商品详情")
 			if len(product.Images) > 0 {
 				meta.Image = shareImage(base, product.Images[0], meta.Image)
 			}
-			meta.Description = firstText(englishText(product.DescriptionJSON), description)
+			meta.Description = firstText(defaultLocaleText(product.DescriptionJSON), description)
 		case "/categories/:id":
 			category, err := c.CategoryRepo.GetBySlug(slug)
 			if err != nil {
@@ -69,19 +69,19 @@ func New(c *container.Container) web.UserPageResolver {
 				return web.PageMetadata{Missing: true}
 			}
 			canonicalPath = "/categories/" + category.Slug
-			title = firstText(englishText(category.NameJSON), "Products")
+			title = firstText(defaultLocaleText(category.NameJSON), "商品中心")
 		case "/blog/:id":
 			post, err := c.ContentPostService.GetPublicBySlug(r.Context(), slug)
 			if err != nil {
 				return web.PageMetadata{Missing: errors.Is(err, contentcontract.ErrNotFound)}
 			}
 			canonicalPath = "/blog/" + post.Slug
-			title = firstText(englishText(post.TitleJSON), "Updates")
-			meta.Description = firstText(englishText(post.SummaryJSON), description)
+			title = firstText(defaultLocaleText(post.TitleJSON), "文章详情")
+			meta.Description = firstText(defaultLocaleText(post.SummaryJSON), description)
 			meta.Image = shareImage(base, post.Thumbnail, meta.Image)
 		}
 		if meta.Home {
-			meta.Title = firstText(englishText(seo["title"]), name)
+			meta.Title = firstText(defaultLocaleText(seo["title"]), name)
 		} else {
 			meta.Title = title + " | " + name
 		}
@@ -96,12 +96,12 @@ func settingText(value any) string {
 }
 
 // The first response uses the same default as the storefront's first visit.
-func englishText(value any) string {
+func defaultLocaleText(value any) string {
 	switch fields := value.(type) {
 	case map[string]any:
-		return settingText(fields["en-US"])
+		return firstText(settingText(fields[constants.LocaleZhCN]), settingText(fields[constants.LocaleZhTW]), settingText(fields[constants.LocaleEnUS]))
 	case jsonmap.JSON:
-		return settingText(fields["en-US"])
+		return firstText(settingText(fields[constants.LocaleZhCN]), settingText(fields[constants.LocaleZhTW]), settingText(fields[constants.LocaleEnUS]))
 	default:
 		return settingText(value)
 	}

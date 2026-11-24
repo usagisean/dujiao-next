@@ -1,31 +1,24 @@
 import { createI18n } from 'vue-i18n'
-// English is the storefront default and is bundled with the first paint.
-// Chinese locales stay available as on-demand language packs.
-import enUS from './locales/en-US.json'
+import zhCN from './locales/zh-CN.json'
+import { DEFAULT_STOREFRONT_LOCALE, resolveStorefrontLocale, storefrontLocales } from './localePreference'
 
-const supportedLocales = ['zh-CN', 'zh-TW', 'en-US']
-
-// 非默认语言的懒加载器：切换语言时才下载对应语言包 chunk
+// 首次访问使用简体中文；其他语言按需加载，已保存的选择优先。
 const localeLoaders: Record<string, () => Promise<{ default: Record<string, unknown> }>> = {
-    'zh-CN': () => import('./locales/zh-CN.json'),
     'zh-TW': () => import('./locales/zh-TW.json'),
+    'en-US': () => import('./locales/en-US.json'),
 }
 
-const loadedLocales = new Set(['en-US'])
+const loadedLocales = new Set<string>([DEFAULT_STOREFRONT_LOCALE])
 
 export function detectLocale(): string {
-    const saved = localStorage.getItem('locale')
-    if (saved && supportedLocales.includes(saved)) return saved
-
-    return 'en-US'
+    return resolveStorefrontLocale(typeof window === 'undefined' ? null : window.localStorage.getItem('locale'))
 }
 
 const i18n = createI18n({
     legacy: false,
-    locale: 'en-US',
-    fallbackLocale: 'en-US',
-    // Keep the locale key widened because Chinese packs are injected at runtime.
-    messages: { 'en-US': enUS } as Record<string, typeof enUS>,
+    locale: DEFAULT_STOREFRONT_LOCALE,
+    fallbackLocale: DEFAULT_STOREFRONT_LOCALE,
+    messages: { [DEFAULT_STOREFRONT_LOCALE]: zhCN } as Record<string, typeof zhCN>,
 })
 
 async function loadLocaleMessages(locale: string): Promise<void> {
@@ -43,7 +36,7 @@ let pendingLocale = ''
 // 切换语言：先确保语言包加载完成再更新 locale，避免闪现缺失文案。
 // 语言包加载失败时保持当前语言不变，避免整页文案退化为 key。
 export async function setI18nLocale(locale: string): Promise<void> {
-    if (!supportedLocales.includes(locale)) return
+    if (!storefrontLocales.includes(locale)) return
     pendingLocale = locale
     try {
         await loadLocaleMessages(locale)
